@@ -21,12 +21,14 @@ final class Injury: Model {
     var playing_surface: String?
     var weather_conditions: String?
     var estimated_absence_period: String?
+    var specialist_id: Node?
 
     var exists: Bool = false
     
     init(name: String, player_id: Node? = nil, situation: String, dateOfInjury: String, timeOfInjury: String,
         injuredBodyPart: String, isContactInjury: String,
-        playingSurface: String, weatherConditions: String, estimatedAbsencePeriod: String
+        playingSurface: String, weatherConditions: String, estimatedAbsencePeriod: String,
+        specialist_id: Node? = nil
         )
     {
         self.name = name
@@ -39,6 +41,7 @@ final class Injury: Model {
         self.playing_surface = playingSurface
         self.weather_conditions = weatherConditions
         self.estimated_absence_period = estimatedAbsencePeriod
+        self.specialist_id = specialist_id
     }
     
     init(node: Node, in context: Context) throws {
@@ -53,6 +56,7 @@ final class Injury: Model {
         playing_surface = try node.extract("playing_surface")
         weather_conditions = try node.extract("weather_conditions")
         estimated_absence_period = try node.extract("estimated_absence_period")
+        specialist_id = try node.extract("specialist_id")
     }
     
     func makeNode(context: Context) throws -> Node {
@@ -67,7 +71,8 @@ final class Injury: Model {
             "is_contact_injury": is_contact_injury,
             "playing_surface": playing_surface,
             "weather_conditions": weather_conditions,
-            "estimated_absence_period": estimated_absence_period
+            "estimated_absence_period": estimated_absence_period,
+            "specialist_id": specialist_id
 
             ])
     }
@@ -85,6 +90,7 @@ final class Injury: Model {
             injuries.string("playing_surface")
             injuries.string("weather_conditions")
             injuries.string("estimated_absence_period")
+            injuries.parent(Specialist.self, optional: false)
 
         }
     }

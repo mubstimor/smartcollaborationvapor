@@ -42,6 +42,7 @@ final class FeedbackController: ResourceRepresentable {
         feedback.treatment_id = new.treatment_id
         feedback.comment = new.comment
         feedback.date_added = new.date_added
+        feedback.specialist_id = new.specialist_id
         try feedback.save()
         return feedback
     }
