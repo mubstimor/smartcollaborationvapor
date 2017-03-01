@@ -56,7 +56,7 @@ final class Specialist: Model, User {
     }
     
     static func register(email: String, password: String, club: String) throws -> Specialist {
-        var newUser = try Specialist(email: email, password: password, club: club)
+        var newUser = Specialist(email: email, password: password, club: club)
         if try Specialist.query().filter("email", newUser.email).first() == nil {
             try newUser.save()
             return newUser
