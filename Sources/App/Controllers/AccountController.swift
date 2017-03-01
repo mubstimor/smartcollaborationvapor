@@ -29,7 +29,7 @@ final class AccountController{
         
         guard let email = request.formURLEncoded?["email"]?.string,
             let password = request.formURLEncoded?["password"]?.string,
-            let club_id = request.formURLEncoded?["club_id"]?.string else {
+            let club_id = request.formURLEncoded?["club_id"]?.node else {
                 return try JSON(node: [
                     "error": "Missing Information!"
                     ])

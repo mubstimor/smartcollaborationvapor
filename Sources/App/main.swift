@@ -22,17 +22,18 @@ try drop.addProvider(VaporPostgreSQL.Provider.self)
 let smart = SmartController()
 smart.addRoutes(drop: drop)
 
-let specialist = SpecialistController()
-specialist.addRoutes(drop: drop)
+let account = AccountController()
+account.addRoutes(drop: drop)
 
-drop.get("test"){ request in
+drop.resource("countries", CountryController())
+drop.resource("leagues", LeagueController())
+drop.resource("clubs", ClubController())
+drop.resource("players", PlayerController())
+drop.resource("injuries", InjuryController())
+drop.resource("treatments", TreatmentController())
+drop.resource("feedbacks", FeedbackController())
+drop.resource("subscriptions", SubscriptionController())
+drop.resource("specialists", SpecialistController())
 
-//    var user = Specialist(email: "mubstimor@gmail.com", password: "sfdsrgeer", club: "Programmers United", country: "UK", league: "Devs")
-//    try user.save()
-//    return try JSON(node: Specialist.all().makeNode())
-    return try JSON(node: [
-        "message": "testing suspended temporarily!"
-        ])
-}
 
 drop.run()

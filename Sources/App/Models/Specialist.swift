@@ -55,7 +55,7 @@ final class Specialist: Model, User {
         try database.delete("specialists")
     }
     
-    static func register(email: String, password: String, club_id: String) throws -> Specialist {
+    static func register(email: String, password: String, club_id: Node? = nil) throws -> Specialist {
         var newUser = try Specialist(email: email, password: password, club_id: club_id)
         if try Specialist.query().filter("email", newUser.email).first() == nil {
             try newUser.save()
