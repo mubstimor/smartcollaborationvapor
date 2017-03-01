@@ -12,29 +12,29 @@ import Fluent
 final class Club: Model {
     var id: Node?
     var name: String
-    var yearFounded: Int
-    var country: String
+    var established: String
+    var league_id: Node?
     var exists: Bool = false
     
-    init(name: String, yearFounded: Int, country: String) {
+    init(name: String, established: String, league_id: Node? = nil) {
         self.name = name
-        self.yearFounded = yearFounded
-        self.country = country
+        self.established = established
+        self.league_id = league_id
     }
     
     init(node: Node, in context: Context) throws {
         id = try node.extract("id")
         name = try node.extract("name")
-        yearFounded = try node.extract("yearFounded")
-        country = try node.extract("country")
+        established = try node.extract("established")
+        league_id = try node.extract("league_id")
     }
     
     func makeNode(context: Context) throws -> Node {
         return try Node(node: [
             "id": id,
             "name": name,
-            "yearFounded": yearFounded,
-            "country": country
+            "established": established,
+            "league_id": league_id
             ])
     }
     
@@ -42,8 +42,8 @@ final class Club: Model {
         try database.create("clubs") { clubs in
             clubs.id()
             clubs.string("name")
-            clubs.string("yearFounded")
-            clubs.string("country")
+            clubs.string("established")
+            clubs.parent(League.self, optional: false)
         }
     }
     

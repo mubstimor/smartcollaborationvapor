@@ -12,38 +12,33 @@ import Fluent
 final class Country: Model {
     var id: Node?
     var name: String
-    var dateAdded: String
     var exists: Bool = false
     
-    init(name: String, dateAdded: String) {
+    init(name: String) {
         self.name = name
-        self.dateAdded = dateAdded
     }
     
     init(node: Node, in context: Context) throws {
         id = try node.extract("id")
         name = try node.extract("name")
-        dateAdded = try node.extract("dateAdded ")
     }
     
     func makeNode(context: Context) throws -> Node {
         return try Node(node: [
             "id": id,
-            "name": name,
-            "dateAdded": dateAdded
+            "name": name
             ])
     }
     
     static func prepare(_ database: Database) throws {
-        try database.create("countries") { countries in
+        try database.create("countrys") { countries in
             countries.id()
             countries.string("name")
-            countries.string("dateAdded")
         }
     }
     
     static func revert(_ database: Database) throws {
-        try database.delete("countries")
+        try database.delete("countrys")
     }
 }
 

@@ -12,25 +12,25 @@ import Fluent
 final class League: Model {
     var id: Node?
     var name: String
-    var country: String
+    var country_id: Node?
     var exists: Bool = false
     
-    init(name: String, country: String) {
+    init(name: String, country_id: Node? = nil) {
         self.name = name
-        self.country = country
+        self.country_id = country_id
     }
     
     init(node: Node, in context: Context) throws {
         id = try node.extract("id")
         name = try node.extract("name")
-        country = try node.extract("country")
+        country_id = try node.extract("country_id")
     }
     
     func makeNode(context: Context) throws -> Node {
         return try Node(node: [
             "id": id,
             "name": name,
-            "country": country
+            "country_id": country_id
             ])
     }
     
@@ -38,7 +38,7 @@ final class League: Model {
         try database.create("leagues") { leagues in
             leagues.id()
             leagues.string("name")
-            leagues.string("country")
+            leagues.parent(Country.self, optional: false)
         }
     }
     

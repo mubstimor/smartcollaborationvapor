@@ -13,26 +13,26 @@ final class Player: Model {
     var id: Node?
     var name: String
     var weight: Float
-    var dateOfBirth: String
-    var dominantLeg: String
-    var club: String
+    var date_of_birth: String
+    var dominant_leg: String
+    var club_id: Node?
     var exists: Bool = false
     
-    init(name: String, weight: Float, dateOfBirth: String, dominantLeg: String, club: String) {
+    init(name: String, weight: Float, dateOfBirth: String, dominantLeg: String, club_id: Node? = nil) {
         self.name = name
         self.weight = weight
-        self.dateOfBirth = dateOfBirth
-        self.dominantLeg = dominantLeg
-        self.club = club
+        self.date_of_birth = dateOfBirth
+        self.dominant_leg = dominantLeg
+        self.club_id = club_id
     }
     
     init(node: Node, in context: Context) throws {
         id = try node.extract("id")
         name = try node.extract("name")
         weight = try node.extract("weight")
-        dateOfBirth = try node.extract("dateOfBirth")
-        dominantLeg = try node.extract("dominantLeg")
-        club = try node.extract("club")
+        date_of_birth = try node.extract("date_of_birth")
+        dominant_leg = try node.extract("dominant_leg")
+        club_id = try node.extract("club_id")
     }
     
     func makeNode(context: Context) throws -> Node {
@@ -40,9 +40,9 @@ final class Player: Model {
             "id": id,
             "name": name,
             "weight": weight,
-            "dateOfBirth": dateOfBirth,
-            "dominantLeg": dominantLeg,
-            "club": club
+            "date_of_birth": date_of_birth,
+            "dominant_leg": dominant_leg,
+            "club_id": club_id
             ])
     }
     
@@ -51,9 +51,9 @@ final class Player: Model {
             players.id()
             players.string("name")
             players.string("weight")
-            players.string("dateOfBirth")
-            players.string("dominantLeg")
-            players.string("club")
+            players.string("date_of_birth")
+            players.string("dominant_leg")
+            players.parent(Club.self, optional: false)
         }
     }
     

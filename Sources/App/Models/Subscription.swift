@@ -12,52 +12,52 @@ import Fluent
 final class Subscription: Model {
     var id: Node?
     var package: String
-    var datePaid: String
-    var amountPaid: Double
-    var dateOfNextPayment: String
-    var club: String
+    var date_paid: String
+    var amount_paid: Double
+    var date_of_next_payment: String
+    var club_id: Node?
     var exists: Bool = false
     
-    init(package: String, datePaid: String, amountPaid: Double, dateOfNextPayment: String, club: String) {
+    init(package: String, datePaid: String, amountPaid: Double, dateOfNextPayment: String, club_id: Node? = nil) {
         self.package = package
-        self.datePaid = datePaid
-        self.amountPaid = amountPaid
-        self.dateOfNextPayment = dateOfNextPayment
-        self.club = club
+        self.date_paid = datePaid
+        self.amount_paid = amountPaid
+        self.date_of_next_payment = dateOfNextPayment
+        self.club_id = club_id
     }
     
     init(node: Node, in context: Context) throws {
         id = try node.extract("id")
         package = try node.extract("package")
-        datePaid = try node.extract("yearFounded")
-        amountPaid = try node.extract("country")
-        dateOfNextPayment = try node.extract("dateOfNextPayment")
-        club = try node.extract("club")
+        date_paid = try node.extract("date_paid")
+        amount_paid = try node.extract("amount_paid")
+        date_of_next_payment = try node.extract("date_of_next_payment")
+        club_id = try node.extract("club_id")
     }
     
     func makeNode(context: Context) throws -> Node {
         return try Node(node: [
             "id": id,
             "package": package,
-            "datePaid": datePaid,
-            "amountPaid": amountPaid,
-            "dateOfNextPayment": dateOfNextPayment,
-            "club": club
+            "date_paid": date_paid,
+            "amount_paid": amount_paid,
+            "date_of_next_payment": date_of_next_payment,
+            "club_id": club_id
             ])
     }
     
     static func prepare(_ database: Database) throws {
-        try database.create("subscription") { clubs in
-            clubs.id()
-            clubs.string("package")
-            clubs.string("datePaid")
-            clubs.string("amountPaid")
-            clubs.string("dateOfNextPayment")
-            clubs.string("club")
+        try database.create("subscriptions") { subscriptions in
+            subscriptions.id()
+            subscriptions.string("package")
+            subscriptions.string("date_paid")
+            subscriptions.string("amount_paid")
+            subscriptions.string("date_of_next_payment")
+           subscriptions.parent(Club.self, optional: false)
         }
     }
     
     static func revert(_ database: Database) throws {
-        try database.delete("subscription")
+        try database.delete("subscriptions")
     }
 }

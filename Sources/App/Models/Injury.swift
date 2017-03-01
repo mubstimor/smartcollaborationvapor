@@ -12,81 +12,81 @@ import Fluent
 final class Injury: Model {
     var id: Node?
     var name: String
-    var playerName: String
+    var player_id: Node?
     var situation: String
-    var dateOfInjury: String
-    var timeOfInjury: String
-    var injuredBodyPart: String
-    var isContactInjury : Bool?
-    var playingSurface: String?
-    var weatherConditions: String?
-    var estimatedAbsencePeriod: String?
+    var date_of_injury: String
+    var time_of_injury: String
+    var injured_body_part: String
+    var is_contact_injury : Bool?
+    var playing_surface: String?
+    var weather_conditions: String?
+    var estimated_absence_period: String?
     var exists: Bool = false
     
-    init(name: String, playerName: String, situation: String, dateOfInjury: String,
+    init(name: String, player_id: Node? = nil, situation: String, dateOfInjury: String,
          timeOfInjury: String, injuredBodyPart: String, isContactInjury: Bool,
          playingSurface: String, weatherConditions: String, estimatedAbsencePeriod: String)
     {
         self.name = name
-        self.playerName = playerName
+        self.player_id = player_id
         self.situation = situation
-        self.dateOfInjury = dateOfInjury
-        self.timeOfInjury = timeOfInjury
-        self.injuredBodyPart = injuredBodyPart
-        self.isContactInjury = isContactInjury
-        self.playingSurface = playingSurface
-        self.weatherConditions = weatherConditions
-        self.estimatedAbsencePeriod = estimatedAbsencePeriod
+        self.date_of_injury = dateOfInjury
+        self.time_of_injury = timeOfInjury
+        self.injured_body_part = injuredBodyPart
+        self.is_contact_injury = isContactInjury
+        self.playing_surface = playingSurface
+        self.weather_conditions = weatherConditions
+        self.estimated_absence_period = estimatedAbsencePeriod
     }
     
     init(node: Node, in context: Context) throws {
         id = try node.extract("id")
         name = try node.extract("name")
-        playerName = try node.extract("playerName")
+        player_id = try node.extract("player_id")
         situation = try node.extract("situation")
-        dateOfInjury = try node.extract("dateOfInjury")
-        timeOfInjury = try node.extract("timeOfInjury")
-        injuredBodyPart = try node.extract("injuredBodyPart")
-        isContactInjury = try node.extract("isContactInjury")
-        playingSurface = try node.extract("playingSurface")
-        weatherConditions = try node.extract("weatherConditions")
-        estimatedAbsencePeriod = try node.extract("estimatedAbsencePeriod")
+        date_of_injury = try node.extract("date_of_injury")
+        time_of_injury = try node.extract("time_of_injury")
+        injured_body_part = try node.extract("injured_body_part")
+        is_contact_injury = try node.extract("is_contact_injury")
+        playing_surface = try node.extract("playing_surface")
+        weather_conditions = try node.extract("weather_conditions")
+        estimated_absence_period = try node.extract("estimated_absence_period")
     }
     
     func makeNode(context: Context) throws -> Node {
         return try Node(node: [
             "id": id,
             "name": name,
-            "playerName": playerName,
+            "player_id": player_id,
             "situation": situation,
-            "dateOfInjury": dateOfInjury,
-            "timeOfInjury": timeOfInjury,
-            "injuredBodyPart": injuredBodyPart,
-            "isContactInjury": isContactInjury,
-            "playingSurface": playingSurface,
-            "weatherConditions": weatherConditions,
-            "estimatedAbsencePeriod": estimatedAbsencePeriod
+            "date_of_injury": date_of_injury,
+            "time_of_injury": time_of_injury,
+            "injured_body_part": injured_body_part,
+            "is_contact_injury": is_contact_injury,
+            "playing_surface": playing_surface,
+            "weather_conditions": weather_conditions,
+            "estimated_absence_period": estimated_absence_period
             ])
     }
     
     static func prepare(_ database: Database) throws {
-        try database.create("injuries") { injuries in
+        try database.create("injurys") { injuries in
             injuries.id()
             injuries.string("name")
-            injuries.string("playerName")
+            injuries.parent(Player.self, optional: false)
             injuries.string("situation")
-            injuries.string("dateOfInjury")
-            injuries.string("timeOfInjury")
-            injuries.string("injuredBodyPart")
-            injuries.string("isContactInjury")
-            injuries.string("playingSurface")
-            injuries.string("weatherConditions")
-            injuries.string("estimatedAbsencePeriod")
+            injuries.string("date_of_injury")
+            injuries.string("time_of_injury")
+            injuries.string("injured_body_part")
+            injuries.string("is_contact_injury")
+            injuries.string("playing_surface")
+            injuries.string("weather_conditions")
+            injuries.string("estimated_absence_period")
         }
     }
     
     static func revert(_ database: Database) throws {
-        try database.delete("injuries")
+        try database.delete("injurys")
     }
 }
 

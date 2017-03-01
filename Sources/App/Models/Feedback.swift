@@ -11,39 +11,39 @@ import Fluent
 
 final class Feedback: Model {
     var id: Node?
-    var treatmentNumber: Int
+    var treatment_id: Node?
     var comment: String
-    var dateAdded: String
+    var date_added: String
     var exists: Bool = false
     
-    init(treatmentNumber: Int, comment: String, dateAdded: String) {
-        self.treatmentNumber = treatmentNumber
+    init(treatment_id: Node? = nil, comment: String, dateAdded: String) {
+        self.treatment_id = treatment_id
         self.comment = comment
-        self.dateAdded = dateAdded
+        self.date_added = dateAdded
     }
     
     init(node: Node, in context: Context) throws {
         id = try node.extract("id")
-        treatmentNumber = try node.extract("treatmentNumber")
+        treatment_id = try node.extract("treatment_id")
         comment = try node.extract("comment")
-        dateAdded = try node.extract("dateAdded")
+        date_added = try node.extract("date_added")
     }
     
     func makeNode(context: Context) throws -> Node {
         return try Node(node: [
             "id": id,
-            "treatmentNumber": treatmentNumber,
+            "treatment_id": treatment_id,
             "comment": comment,
-            "dateAdded": dateAdded
+            "date_added": date_added
             ])
     }
     
     static func prepare(_ database: Database) throws {
         try database.create("feedbacks") { feedbacks in
             feedbacks.id()
-            feedbacks.string("treatmentNumber")
+            feedbacks.parent(Treatment.self, optional: false)
             feedbacks.string("comment")
-            feedbacks.string("dateAdded")
+            feedbacks.string("date_added")
         }
     }
     
