@@ -13,7 +13,7 @@ import Turnstile
 final class AccountController{
     
     func addRoutes(drop: Droplet){
-        let specialist = drop.grouped("specialist")
+        let specialist = drop.grouped("api")
         specialist.get(handler: index)
         specialist.post("register", handler: register)
         specialist.post("login", handler: login)
