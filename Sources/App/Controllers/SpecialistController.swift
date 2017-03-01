@@ -9,6 +9,7 @@
 
 import Vapor
 import HTTP
+import TurnstileCrypto
 
 final class SpecialistController: ResourceRepresentable {
     
@@ -40,8 +41,8 @@ final class SpecialistController: ResourceRepresentable {
         let new = try request.specialist()
         var specialist = specialist
         specialist.email = new.email
-        specialist.password = new.password
-        specialist.club_id = new.club_id
+        specialist.password = BCrypt.hash(password: new.password)
+        specialist.club = new.club
         try specialist.save()
         return specialist
     }
@@ -54,7 +55,6 @@ final class SpecialistController: ResourceRepresentable {
     func makeResource() -> Resource<Specialist> {
         return Resource(
             index: index,
-            store: create,
             show: show,
             replace: replace,
             modify: update,

@@ -10,6 +10,7 @@ import Vapor
 import HTTP
 import Turnstile
 
+
 final class AccountController{
     
     func addRoutes(drop: Droplet){
@@ -27,25 +28,25 @@ final class AccountController{
     
     func register(request: Request) throws -> ResponseRepresentable {
         
-        guard let email = request.formURLEncoded?["email"]?.string,
-            let password = request.formURLEncoded?["password"]?.string,
-            let club_id = request.formURLEncoded?["club_id"]?.node else {
+        guard let email = request.data["email"]?.string,
+            let password = request.data["password"]?.string,
+            let club = request.data["club"]?.string else {
                 return try JSON(node: [
                     "error": "Missing Information!"
                     ])
         }
-        _ = try Specialist.register(email: email, password: password, club_id: club_id)
+        _ = try Specialist.register(email: email, password: password, club: club)
         
         let credentials = UsernamePassword(username: email, password: password)
         try request.auth.login(credentials)
         
-        return Response(redirect: "/specialist")
+        return Response(redirect: "/specialists")
         
     }
     
     func login(request: Request) throws -> ResponseRepresentable {
-        guard let email = request.formURLEncoded?["email"]?.string,
-            let password = request.formURLEncoded?["password"]?.string else {
+        guard let email = request.data["email"]?.string,
+            let password = request.data["password"]?.string else {
                 return try JSON(node: [
                     "error": "Missing email or password!"
                     ])

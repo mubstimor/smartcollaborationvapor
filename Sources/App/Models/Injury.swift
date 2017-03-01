@@ -16,16 +16,18 @@ final class Injury: Model {
     var situation: String
     var date_of_injury: String
     var time_of_injury: String
-    var injured_body_part: String
-    var is_contact_injury : Bool?
+    var injured_body_part: String?
+    var is_contact_injury : String?
     var playing_surface: String?
     var weather_conditions: String?
     var estimated_absence_period: String?
+
     var exists: Bool = false
     
-    init(name: String, player_id: Node? = nil, situation: String, dateOfInjury: String,
-         timeOfInjury: String, injuredBodyPart: String, isContactInjury: Bool,
-         playingSurface: String, weatherConditions: String, estimatedAbsencePeriod: String)
+    init(name: String, player_id: Node? = nil, situation: String, dateOfInjury: String, timeOfInjury: String,
+        injuredBodyPart: String, isContactInjury: String,
+        playingSurface: String, weatherConditions: String, estimatedAbsencePeriod: String
+        )
     {
         self.name = name
         self.player_id = player_id
@@ -66,6 +68,7 @@ final class Injury: Model {
             "playing_surface": playing_surface,
             "weather_conditions": weather_conditions,
             "estimated_absence_period": estimated_absence_period
+
             ])
     }
     
@@ -82,6 +85,7 @@ final class Injury: Model {
             injuries.string("playing_surface")
             injuries.string("weather_conditions")
             injuries.string("estimated_absence_period")
+
         }
     }
     

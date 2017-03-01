@@ -49,6 +49,7 @@ final class InjuryController: ResourceRepresentable {
         injury.playing_surface = new.playing_surface
         injury.weather_conditions = new.weather_conditions
         injury.estimated_absence_period = new.estimated_absence_period
+
         try injury.save()
         return injury
     }
