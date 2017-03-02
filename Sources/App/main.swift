@@ -32,6 +32,17 @@ league.addRoutes(drop: drop)
 let club = ClubController()
 club.addRoutes(drop: drop)
 
+let protect = ProtectMiddleware(error:
+    Abort.custom(status: .forbidden, message: "Not authorized.")
+)
+
+drop.grouped(protect).group("secure") { api in
+    api.get("me") { request in
+        return try JSON(node: request.user().makeNode())
+}
+}
+
+
 drop.resource("countries", CountryController())
 //drop.resource("leagues", LeagueController())
 //drop.resource("clubs", ClubController())

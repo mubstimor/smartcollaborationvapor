@@ -17,6 +17,8 @@ final class ClubController {
         clubs.post(handler: create)
         clubs.get(Club.self, handler: show)
         clubs.patch(Club.self, handler: update)
+        clubs.delete(Club.self, handler: delete)
+        //clubs.put(Club.self, handler: replace)
         clubs.get(Club.self, "specialists", handler: specialistsIndex)
     }
     

@@ -35,12 +35,13 @@ final class AccountController{
                     "error": "Missing Information!"
                     ])
         }
-        _ = try Specialist.register(email: email, password: password, club_id: club)
+        let user = try Specialist.register(email: email, password: password, club_id: club)
         
         let credentials = UsernamePassword(username: email, password: password)
         try request.auth.login(credentials)
         
-        return Response(redirect: "/specialists")
+        //return Response(redirect: "/specialists")
+        return user
         
     }
     
@@ -54,7 +55,9 @@ final class AccountController{
         let credentials = UsernamePassword(username: email, password: password)
         do {
             try request.auth.login(credentials)
-            return Response(redirect: "/specialist")
+            //return Response(redirect: "/specialist")
+            let user = try request.user()
+            return user
         } catch let e as TurnstileError {
             return e.description
         }
@@ -66,4 +69,7 @@ final class AccountController{
     }
     
 }
+
+
+
 

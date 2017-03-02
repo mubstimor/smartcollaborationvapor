@@ -10,6 +10,7 @@ import Vapor
 import Fluent
 import Turnstile
 import TurnstileCrypto
+import HTTP
 import Auth
 
 final class Specialist: Model, User {
@@ -104,3 +105,11 @@ extension Specialist: Authenticator {
     }
 }
 
+extension Request {
+    func user() throws -> Specialist {
+        guard let user = try auth.user() as? Specialist else {
+            throw Abort.badRequest
+        }
+        return user
+    }
+}
