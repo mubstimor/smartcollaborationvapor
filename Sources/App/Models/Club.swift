@@ -52,3 +52,8 @@ final class Club: Model {
     }
 }
 
+extension Club{
+    func specialists() throws -> [Specialist] {
+        return try children(nil, Specialist.self).all()
+    }
+}

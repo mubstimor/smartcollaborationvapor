@@ -30,12 +30,12 @@ final class AccountController{
         
         guard let email = request.data["email"]?.string,
             let password = request.data["password"]?.string,
-            let club = request.data["club"]?.string else {
+            let club = request.data["club_id"]?.string else {
                 return try JSON(node: [
                     "error": "Missing Information!"
                     ])
         }
-        _ = try Specialist.register(email: email, password: password, club: club)
+        _ = try Specialist.register(email: email, password: password, club_id: club)
         
         let credentials = UsernamePassword(username: email, password: password)
         try request.auth.login(credentials)

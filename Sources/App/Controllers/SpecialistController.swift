@@ -42,7 +42,7 @@ final class SpecialistController: ResourceRepresentable {
         var specialist = specialist
         specialist.email = new.email
         specialist.password = BCrypt.hash(password: new.password)
-        specialist.club = new.club
+        specialist.club_id = new.club_id
         try specialist.save()
         return specialist
     }

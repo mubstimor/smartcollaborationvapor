@@ -9,7 +9,16 @@
 import Vapor
 import HTTP
 
-final class ClubController: ResourceRepresentable {
+final class ClubController {
+    
+    func addRoutes(drop: Droplet){
+        let clubs = drop.grouped("clubs")
+        clubs.get(handler: index)
+        clubs.post(handler: create)
+        clubs.get(Club.self, handler: show)
+        clubs.patch(Club.self, handler: update)
+        clubs.get(Club.self, "specialists", handler: specialistsIndex)
+    }
     
     func index(request: Request) throws -> ResponseRepresentable {
         return try Club.all().makeNode().converted(to: JSON.self)
@@ -50,16 +59,21 @@ final class ClubController: ResourceRepresentable {
         return try create(request: request)
     }
     
-    func makeResource() -> Resource<Club> {
-        return Resource(
-            index: index,
-            store: create,
-            show: show,
-            replace: replace,
-            modify: update,
-            destroy: delete,
-            clear: clear
-        )
+//    func makeResource() -> Resource<Club> {
+//        return Resource(
+//            index: index,
+//            store: create,
+//            show: show,
+//            replace: replace,
+//            modify: update,
+//            destroy: delete,
+//            clear: clear
+//        )
+//    }
+    
+    func specialistsIndex(request: Request, club: Club) throws -> ResponseRepresentable {
+        let children = try club.specialists()
+        return try JSON(node: children.makeNode())
     }
 }
 

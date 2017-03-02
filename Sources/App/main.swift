@@ -28,9 +28,12 @@ account.addRoutes(drop: drop)
 let league = LeagueController()
 league.addRoutes(drop: drop)
 
+let club = ClubController()
+club.addRoutes(drop: drop)
+
 drop.resource("countries", CountryController())
 //drop.resource("leagues", LeagueController())
-drop.resource("clubs", ClubController())
+//drop.resource("clubs", ClubController())
 drop.resource("players", PlayerController())
 drop.resource("injuries", InjuryController())
 drop.resource("treatments", TreatmentController())

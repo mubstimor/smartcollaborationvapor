@@ -17,20 +17,20 @@ final class Specialist: Model, User {
     var id: Node?
     var email: String
     var password: String
-    var club: String
+    var club_id: String
     var exists: Bool = false
     
-    init(email: String, password: String, club: String) {
+    init(email: String, password: String, club_id: String) {
         self.email = email
         self.password = BCrypt.hash(password: password)
-        self.club = club
+        self.club_id = club_id
     }
     
     init(node: Node, in context: Context) throws {
         id = try node.extract("id")
         email = try node.extract("email")
         password = try node.extract("password")
-        club = try node.extract("club")
+        club_id = try node.extract("club_id")
     }
     
     func makeNode(context: Context) throws -> Node {
@@ -38,7 +38,7 @@ final class Specialist: Model, User {
             "id": id,
             "email": email,
             "password": password,
-            "club": club
+            "club_id": club_id
             ])
     }
     
@@ -47,7 +47,7 @@ final class Specialist: Model, User {
             specialists.id()
             specialists.string("email")
             specialists.string("password")
-            specialists.string("club")
+            specialists.parent(Club.self, optional: false)
         }
     }
     
@@ -55,8 +55,8 @@ final class Specialist: Model, User {
         try database.delete("specialists")
     }
     
-    static func register(email: String, password: String, club: String) throws -> Specialist {
-        var newUser = Specialist(email: email, password: password, club: club)
+    static func register(email: String, password: String, club_id: String) throws -> Specialist {
+        var newUser = Specialist(email: email, password: password, club_id: club_id)
         if try Specialist.query().filter("email", newUser.email).first() == nil {
             try newUser.save()
             return newUser
