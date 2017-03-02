@@ -13,6 +13,7 @@ drop.preparations.append(Injury.self)
 drop.preparations.append(Treatment.self)
 drop.preparations.append(Subscription.self)
 drop.preparations.append(Feedback.self)
+drop.preparations.append(Fixture.self)
 
 drop.addConfigurable(middleware: AuthMiddleware(user: Specialist.self), name: "auth")
 
@@ -40,6 +41,6 @@ drop.resource("treatments", TreatmentController())
 drop.resource("feedbacks", FeedbackController())
 drop.resource("subscriptions", SubscriptionController())
 drop.resource("specialists", SpecialistController())
-
+drop.resource("fixtures", FixtureController())
 
 drop.run()
