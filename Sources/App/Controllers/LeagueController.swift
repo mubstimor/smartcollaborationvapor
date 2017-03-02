@@ -9,7 +9,16 @@
 import Vapor
 import HTTP
 
-final class LeagueController: ResourceRepresentable {
+final class LeagueController {
+    
+    func addRoutes(drop: Droplet){
+        let leagues = drop.grouped("leagues")
+        leagues.get(handler: index)
+        leagues.post(handler: create)
+        leagues.get(League.self, handler: show)
+        leagues.patch(League.self, handler: update)
+        leagues.get(League.self, "clubs", handler: clubsIndex)
+    }
     
     func index(request: Request) throws -> ResponseRepresentable {
         return try League.all().makeNode().converted(to: JSON.self)
@@ -49,16 +58,21 @@ final class LeagueController: ResourceRepresentable {
         return try create(request: request)
     }
     
-    func makeResource() -> Resource<League> {
-        return Resource(
-            index: index,
-            store: create,
-            show: show,
-            replace: replace,
-            modify: update,
-            destroy: delete,
-            clear: clear
-        )
+//    func makeResource() -> Resource<League> {
+//        return Resource(
+//            index: index,
+//            store: create,
+//            show: show,
+//            replace: replace,
+//            modify: update,
+//            destroy: delete,
+//            clear: clear
+//        )
+//    }
+    
+    func clubsIndex(request: Request, league: League) throws -> ResponseRepresentable {
+        let children = try league.clubs()
+        return try JSON(node: children.makeNode())
     }
 }
 

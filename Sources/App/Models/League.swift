@@ -47,3 +47,8 @@ final class League: Model {
     }
 }
 
+extension League{
+    func clubs() throws -> [Club] {
+        return try children(nil, Club.self).all()
+    }
+}
