@@ -30,7 +30,7 @@ final class Fixture: Model {
     
     init(node: Node, in context: Context) throws {
         id = try node.extract("id")
-        league_id = try node.extract("injury_id")
+        league_id = try node.extract("league_id")
         name = try node.extract("name")
         game_date = try node.extract("game_date")
         game_time = try node.extract("game_time")
@@ -41,7 +41,7 @@ final class Fixture: Model {
     func makeNode(context: Context) throws -> Node {
         return try Node(node: [
             "id": id,
-            "injury_id": league_id,
+            "league_id": league_id,
             "name": name,
             "game_date": game_date,
             "game_time": game_time,
@@ -53,7 +53,7 @@ final class Fixture: Model {
     static func prepare(_ database: Database) throws {
         try database.create("fixtures") { fixtures in
             fixtures.id()
-            fixtures.parent(Injury.self, optional: false)
+            fixtures.parent(League.self, optional: false)
             fixtures.string("name")
             fixtures.string("game_date")
             fixtures.string("game_time")
