@@ -33,13 +33,13 @@ let club = ClubController()
 club.addRoutes(drop: drop)
 
 let protect = ProtectMiddleware(error:
-    Abort.custom(status: .forbidden, message: "Not authorized.")
+    Abort.custom(status: .forbidden, message: "Not authorized.!")
 )
 
-drop.grouped(protect).group("secure") { api in
+drop.grouped(BasicAuthMiddleware(), protect).group("api") { api in
     api.get("me") { request in
         return try JSON(node: request.user().makeNode())
-}
+    }
 }
 
 

@@ -19,6 +19,8 @@ final class Specialist: Model, User {
     var email: String
     var password: String
     var club_id: String
+    var apiKeyID = URandom().secureToken
+    var apiKeySecret = URandom().secureToken
     var exists: Bool = false
     
     init(email: String, password: String, club_id: String) {
@@ -32,6 +34,8 @@ final class Specialist: Model, User {
         email = try node.extract("email")
         password = try node.extract("password")
         club_id = try node.extract("club_id")
+        apiKeyID = try node.extract("api_key_id")
+        apiKeySecret = try node.extract("api_key_secret")
     }
     
     func makeNode(context: Context) throws -> Node {
@@ -39,7 +43,9 @@ final class Specialist: Model, User {
             "id": id,
             "email": email,
             "password": password,
-            "club_id": club_id
+            "club_id": club_id,
+            "api_key_id": apiKeyID,
+            "api_key_secret": apiKeySecret
             ])
     }
     
@@ -49,6 +55,8 @@ final class Specialist: Model, User {
             specialists.string("email")
             specialists.string("password")
             specialists.parent(Club.self, optional: false)
+            specialists.string("api_key_id")
+            specialists.string("api_key_secret")
         }
     }
     
@@ -78,6 +86,10 @@ extension Specialist: Authenticator {
         var user: Specialist?
         
         switch credentials {
+            
+            /*
+             * Based on example at https://videos.raywenderlich.com/screencasts/server-side-swift-with-vapor-authentication-with-turnstile
+             */
         case let credentials as UsernamePassword:
             let fetchedUser = try Specialist.query()
                 .filter("email", credentials.username)
@@ -87,8 +99,20 @@ extension Specialist: Authenticator {
                 (try? BCrypt.verify(password: credentials.password, matchesHash: password)) == true {
                 user = fetchedUser
             }
+            
         case let credentials as Identifier:
             user = try Specialist.find(credentials.id)
+            
+            /**
+             Authenticates via API Keys
+             * taken from https://github.com/stormpath/Turnstile-Vapor-Example
+             */
+        case let credentials as APIKey:
+            user = try Specialist.query()
+                .filter("api_key_id", credentials.id)
+                .filter("api_key_secret", credentials.secret)
+                .first()
+            
         default:
             throw UnsupportedCredentialsError()
         }
