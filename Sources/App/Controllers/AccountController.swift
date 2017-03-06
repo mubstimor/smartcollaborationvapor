@@ -56,10 +56,11 @@ final class AccountController{
         do {
             try request.auth.login(credentials)
             //return Response(redirect: "/specialist")
-            let user = try request.user().makeResponse()
+            let user = try request.user()
             return user
         } catch let e as TurnstileError {
-            return e.description
+            //return e.description
+            return try JSON(node: ["error": e.description])
         }
     }
     

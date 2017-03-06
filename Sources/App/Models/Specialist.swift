@@ -120,13 +120,15 @@ extension Specialist: Authenticator {
         if let user = user {
             return user
         } else {
-            throw IncorrectCredentialsError()
+            //throw IncorrectCredentialsError()
+            throw Abort.custom(status: .badRequest, message: "Invalid credentials.")
         }
     }
     
     static func register(credentials: Credentials) throws -> User {
         throw Abort.badRequest
     }
+    
 }
 
 extension Request {
