@@ -68,8 +68,16 @@ final class Specialist: Model, User {
     static func register(email: String, password: String, club_id: String) throws -> Specialist {
         var newUser = try Specialist(email: email, password: password, club_id: club_id)
         if try Specialist.query().filter("email", newUser.email.value).first() == nil {
-            try newUser.save()
-            return newUser
+            // check user email belongs to a given extension
+            let userEmail = newUser.email.value
+            if userEmail.hasSuffix("@arsenal.com") && club_id == "1" || club_id == "2" && userEmail.hasSuffix("@burnley.com") {
+                // save user
+                try newUser.save()
+                return newUser
+            }else{
+                throw Abort.custom(status: .badRequest, message: "Email not supported")
+            }
+            
         } else {
             throw AccountTakenError()
         }
