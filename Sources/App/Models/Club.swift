@@ -13,12 +13,14 @@ final class Club: Model {
     var id: Node?
     var name: String
     var established: String
+    var email_extension: String
     var league_id: Node?
     var exists: Bool = false
     
-    init(name: String, established: String, league_id: Node? = nil) {
+    init(name: String, established: String, email_extension: String, league_id: Node? = nil) {
         self.name = name
         self.established = established
+        self.email_extension = email_extension
         self.league_id = league_id
     }
     
@@ -26,6 +28,7 @@ final class Club: Model {
         id = try node.extract("id")
         name = try node.extract("name")
         established = try node.extract("established")
+        email_extension = try node.extract("email_extension")
         league_id = try node.extract("league_id")
     }
     
@@ -34,6 +37,7 @@ final class Club: Model {
             "id": id,
             "name": name,
             "established": established,
+            "email_extension": email_extension,
             "league_id": league_id
             ])
     }
@@ -43,6 +47,7 @@ final class Club: Model {
             clubs.id()
             clubs.string("name")
             clubs.string("established")
+            clubs.string("email_extension")
             clubs.parent(League.self, optional: false)
         }
     }

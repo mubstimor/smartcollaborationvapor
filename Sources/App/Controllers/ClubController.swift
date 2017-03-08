@@ -52,6 +52,7 @@ final class ClubController {
         club.name = new.name
         club.established = new.established
         club.league_id = new.league_id
+        club.email_extension = new.email_extension
         try club.save()
         return club
     }
@@ -77,6 +78,7 @@ final class ClubController {
         let children = try club.specialists()
         return try JSON(node: children.makeNode())
     }
+    
 }
 
 extension Request {

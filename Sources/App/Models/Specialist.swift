@@ -70,12 +70,17 @@ final class Specialist: Model, User {
         if try Specialist.query().filter("email", newUser.email.value).first() == nil {
             // check user email belongs to a given extension
             let userEmail = newUser.email.value
-            if userEmail.hasSuffix("@arsenal.com") && club_id == "1" || club_id == "2" && userEmail.hasSuffix("@burnley.com") {
+            
+            guard let club = try Club.query().filter("id", club_id).first() else{
+                throw Abort.custom(status: .badRequest, message: "can't load club with id \(club_id)")
+            }
+            
+            if userEmail.hasSuffix(club.email_extension) {
                 // save user
                 try newUser.save()
                 return newUser
             }else{
-                throw Abort.custom(status: .badRequest, message: "Email not supported")
+                throw Abort.custom(status: .badRequest, message: "Email not supported for \(club.name)")
             }
             
         } else {
