@@ -16,22 +16,23 @@ import Auth
 final class Specialist: Model, User {
     
     var id: Node?
-    var email: String
+    var email: Valid<EmailValidator>
     var password: String
     var club_id: String
     var apiKeyID = URandom().secureToken
     var apiKeySecret = URandom().secureToken
     var exists: Bool = false
     
-    init(email: String, password: String, club_id: String) {
-        self.email = email
+    init(email: String, password: String, club_id: String) throws {
+        self.email = try email.validated()
         self.password = BCrypt.hash(password: password)
         self.club_id = club_id
     }
     
     init(node: Node, in context: Context) throws {
         id = try node.extract("id")
-        email = try node.extract("email")
+//        let emailString = try node.extract("email") as String
+        email = try (node.extract("email") as String).validated()
         password = try node.extract("password")
         club_id = try node.extract("club_id")
         apiKeyID = try node.extract("api_key_id")
@@ -41,7 +42,7 @@ final class Specialist: Model, User {
     func makeNode(context: Context) throws -> Node {
         return try Node(node: [
             "id": id,
-            "email": email,
+            "email": email.value,
             "password": password,
             "club_id": club_id,
             "api_key_id": apiKeyID,
@@ -65,8 +66,8 @@ final class Specialist: Model, User {
     }
     
     static func register(email: String, password: String, club_id: String) throws -> Specialist {
-        var newUser = Specialist(email: email, password: password, club_id: club_id)
-        if try Specialist.query().filter("email", newUser.email).first() == nil {
+        var newUser = try Specialist(email: email, password: password, club_id: club_id)
+        if try Specialist.query().filter("email", newUser.email.value).first() == nil {
             try newUser.save()
             return newUser
         } else {

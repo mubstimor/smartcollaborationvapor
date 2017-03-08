@@ -76,7 +76,7 @@ extension Specialist: ResponseRepresentable {
         let json = try JSON(node:
             [
                 "id": id,
-                "email": email,
+                "email": email.value,
                 "club_id": club_id,
                 "api_key_id": apiKeyID,
                 "api_key_secret": apiKeySecret
