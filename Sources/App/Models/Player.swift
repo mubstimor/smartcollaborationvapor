@@ -61,3 +61,7 @@ final class Player: Model {
         try database.delete("players")
     }
 }
+
+extension Player {
+
+}
