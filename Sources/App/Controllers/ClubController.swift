@@ -17,8 +17,8 @@ final class ClubController {
     )
     
     func addRoutes(drop: Droplet){
-        //let clubs = drop.grouped("clubs")
-        let clubs = drop.grouped(BasicAuthMiddleware(), protect).grouped("clubs")
+        let clubs = drop.grouped("clubs")
+        //let clubs = drop.grouped(BasicAuthMiddleware(), protect).grouped("clubs")
         clubs.get(handler: index)
         clubs.post(handler: create)
         clubs.get(Club.self, handler: show)
@@ -93,13 +93,7 @@ final class ClubController {
     
     func playersIndex(request: Request, club: Club) throws -> ResponseRepresentable {
         let user_club_id = try request.user().club_id
-        //        let children = try club.players()
-        //        return try JSON(node: children.makeNode())
         let players = try Player.query().filter("club_id", user_club_id).all()
-        //        return try JSON(node: [
-        //            "requested": "players for club \(user_club_id) requested"
-        //            ])
-        
         return try JSON(players.makeNode())
     }
 }
