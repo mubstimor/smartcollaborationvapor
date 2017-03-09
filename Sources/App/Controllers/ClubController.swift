@@ -87,8 +87,12 @@ final class ClubController {
     }
     
     func playersIndex(request: Request, club: Club) throws -> ResponseRepresentable {
+        let user_id = try request.user().club_id
         let children = try club.players()
-        return try JSON(node: children.makeNode())
+//        return try JSON(node: children.makeNode())
+        return try JSON(node: [
+            "requested": "players for club \(user_id) requested"
+            ])
     }
     
 }
