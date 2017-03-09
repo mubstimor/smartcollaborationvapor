@@ -46,6 +46,7 @@ final class AccountController{
     }
     
     func login(request: Request) throws -> ResponseRepresentable {
+        print("called to authenticate api keys")
         guard let email = request.data["email"]?.string,
             let password = request.data["password"]?.string else {
                 return try JSON(node: [

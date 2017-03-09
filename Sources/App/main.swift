@@ -16,6 +16,8 @@ drop.preparations.append(Feedback.self)
 drop.preparations.append(Fixture.self)
 
 drop.addConfigurable(middleware: AuthMiddleware(user: Specialist.self), name: "auth")
+//drop.addConfigurable(middleware: BasicAuthMiddleware, name: "basic")
+drop.middleware.append(BasicAuthMiddleware())
 
 try drop.addProvider(VaporPostgreSQL.Provider.self)
 
