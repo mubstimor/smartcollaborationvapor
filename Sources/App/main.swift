@@ -1,8 +1,12 @@
 import Vapor
 import VaporPostgreSQL
 import Auth
+import Sessions
 
 let drop = Droplet()
+
+let memory = MemorySessions()
+let sessions = SessionsMiddleware(sessions: memory)
 
 drop.preparations.append(Country.self)
 drop.preparations.append(League.self)
@@ -18,6 +22,7 @@ drop.preparations.append(Fixture.self)
 drop.addConfigurable(middleware: AuthMiddleware(user: Specialist.self), name: "auth")
 //drop.addConfigurable(middleware: BasicAuthMiddleware, name: "basic")
 drop.middleware.append(BasicAuthMiddleware())
+drop.middleware.append(sessions)
 
 try drop.addProvider(VaporPostgreSQL.Provider.self)
 
