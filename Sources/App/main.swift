@@ -2,6 +2,9 @@ import Vapor
 import VaporPostgreSQL
 import Auth
 import Sessions
+import Cookies
+import Foundation
+import HTTP
 
 let drop = Droplet()
 
@@ -19,7 +22,18 @@ drop.preparations.append(Subscription.self)
 drop.preparations.append(Feedback.self)
 drop.preparations.append(Fixture.self)
 
-drop.addConfigurable(middleware: AuthMiddleware(user: Specialist.self), name: "auth")
+let auth = AuthMiddleware(user: Specialist.self) { value in
+    return Cookie(
+        name: "vapor-auth",
+        value: value,
+        expires: Date().addingTimeInterval(60 * 60 * 5), // 5 hours
+        secure: true,
+        httpOnly: true
+    )
+}
+
+drop.middleware.append(auth)
+//drop.addConfigurable(middleware: AuthMiddleware(user: Specialist.self), name: "auth")
 //drop.addConfigurable(middleware: BasicAuthMiddleware, name: "basic")
 drop.middleware.append(BasicAuthMiddleware())
 drop.middleware.append(sessions)
