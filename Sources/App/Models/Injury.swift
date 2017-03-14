@@ -21,14 +21,14 @@ final class Injury: Model {
     var playing_surface: String?
     var weather_conditions: String?
     var estimated_absence_period: String?
+    var club_id: String?
     var specialist_id: Node?
 
     var exists: Bool = false
     
     init(name: String, player_id: Node? = nil, situation: String, dateOfInjury: String, timeOfInjury: String,
         injuredBodyPart: String, isContactInjury: String,
-        playingSurface: String, weatherConditions: String, estimatedAbsencePeriod: String,
-        specialist_id: Node? = nil
+        playingSurface: String, weatherConditions: String, estimatedAbsencePeriod: String, club_id: String, specialist_id: Node? = nil
         )
     {
         self.name = name
@@ -41,6 +41,7 @@ final class Injury: Model {
         self.playing_surface = playingSurface
         self.weather_conditions = weatherConditions
         self.estimated_absence_period = estimatedAbsencePeriod
+        self.club_id = club_id
         self.specialist_id = specialist_id
     }
     
@@ -56,6 +57,7 @@ final class Injury: Model {
         playing_surface = try node.extract("playing_surface")
         weather_conditions = try node.extract("weather_conditions")
         estimated_absence_period = try node.extract("estimated_absence_period")
+        club_id = try node.extract("club_id")
         specialist_id = try node.extract("specialist_id")
     }
     
@@ -72,6 +74,7 @@ final class Injury: Model {
             "playing_surface": playing_surface,
             "weather_conditions": weather_conditions,
             "estimated_absence_period": estimated_absence_period,
+            "club_id": club_id,
             "specialist_id": specialist_id
 
             ])
@@ -90,6 +93,7 @@ final class Injury: Model {
             injuries.string("playing_surface")
             injuries.string("weather_conditions")
             injuries.string("estimated_absence_period")
+            injuries.string("club_id")
             injuries.parent(Specialist.self, optional: false)
 
         }
