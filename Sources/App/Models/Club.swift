@@ -65,8 +65,5 @@ extension Club{
     func players() throws -> [Player] {
         return try children(nil, Player.self).all()
     }
-    
-    func injuries() throws -> [Injury] {
-        return try children(nil, Injury.self).all()
-    }
+
 }

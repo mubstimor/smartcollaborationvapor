@@ -17,6 +17,7 @@ final class SmartController{
         drop.get(handler: index)
         drop.get("dbversion", handler: dbversion)
         drop.post("name", handler: postName)
+        drop.post("clubinjuries", handler: clubInjuries)
     }
 
     func dbversion(request: Request) throws -> ResponseRepresentable{
@@ -38,6 +39,23 @@ final class SmartController{
             "message":"Hello \(name)"
             ])
     }
+    
+    func clubInjuries(request: Request) throws -> ResponseRepresentable{
+        
+        guard let club_id = request.data["club_id"]?.string else{
+            throw Abort.badRequest
+        }
+        
+//        let user_club_id = try request.user().club_id
+        let injuries = try Injury.query().filter("club_id", club_id).all()
+        return try JSON(injuries.makeNode())
+
+//
+//        return try JSON(node:[
+//            "message":"Hello \(club_id)"
+//            ])
+    }
+    
     
     func index(request: Request) throws -> ResponseRepresentable{
     

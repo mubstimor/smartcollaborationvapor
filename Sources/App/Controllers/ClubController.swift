@@ -93,15 +93,10 @@ final class ClubController {
     }
     
 //    func injuriesIndex(request: Request, club: Club) throws -> ResponseRepresentable {
-//        let children = try club.injuries()
-//        return try JSON(node: children.makeNode())
+//        let user_club_id = try request.user().club_id
+//        let injuries = try Injury.query().filter("club_id", user_club_id).all()
+//        return try JSON(injuries.makeNode())
 //    }
-    
-    func injuriesIndex(request: Request, club: Club) throws -> ResponseRepresentable {
-        let user_club_id = try request.user().club_id
-        let players = try Injury.query().filter("club_id", user_club_id).all()
-        return try JSON(players.makeNode())
-    }
 }
 
 extension Request {
