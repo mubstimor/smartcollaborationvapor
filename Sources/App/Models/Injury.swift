@@ -104,3 +104,8 @@ final class Injury: Model {
     }
 }
 
+extension Injury{
+    func treatments() throws -> [Treatment] {
+        return try children(nil, Treatment.self).all()
+    }
+}

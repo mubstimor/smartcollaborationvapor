@@ -10,7 +10,16 @@
 import Vapor
 import HTTP
 
-final class InjuryController: ResourceRepresentable {
+final class InjuryController {
+    
+    func addRoutes(drop: Droplet){
+        let injuries = drop.grouped("injuries")
+        injuries.get(handler: index)
+        injuries.post(handler: create)
+        injuries.get(Injury.self, handler: show)
+        injuries.patch(Injury.self, handler: update)
+        injuries.get(Injury.self, "treatments", handler: treatmentsIndex)
+    }
     
     func index(request: Request) throws -> ResponseRepresentable {
         return try Injury.all().makeNode().converted(to: JSON.self)
@@ -61,16 +70,21 @@ final class InjuryController: ResourceRepresentable {
         return try create(request: request)
     }
     
-    func makeResource() -> Resource<Injury> {
-        return Resource(
-            index: index,
-            store: create,
-            show: show,
-            replace: replace,
-            modify: update,
-            destroy: delete,
-            clear: clear
-        )
+//    func makeResource() -> Resource<Injury> {
+//        return Resource(
+//            index: index,
+//            store: create,
+//            show: show,
+//            replace: replace,
+//            modify: update,
+//            destroy: delete,
+//            clear: clear
+//        )
+//    }
+    
+    func treatmentsIndex(request: Request, injury: Injury) throws -> ResponseRepresentable {
+        let children = try injury.treatments()
+        return try JSON(node: children.makeNode())
     }
 }
 
