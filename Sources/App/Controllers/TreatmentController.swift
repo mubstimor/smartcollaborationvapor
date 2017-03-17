@@ -10,7 +10,16 @@
 import Vapor
 import HTTP
 
-final class TreatmentController: ResourceRepresentable {
+final class TreatmentController{
+    
+    func addRoutes(drop: Droplet){
+        let treatments = drop.grouped("treatments")
+        treatments.get(handler: index)
+        treatments.post(handler: create)
+        treatments.get(Treatment.self, handler: show)
+        treatments.patch(Treatment.self, handler: update)
+        treatments.get(Treatment.self, "feedbacks", handler: commentsIndex)
+    }
     
     func index(request: Request) throws -> ResponseRepresentable {
         return try Treatment.all().makeNode().converted(to: JSON.self)
@@ -55,17 +64,23 @@ final class TreatmentController: ResourceRepresentable {
         return try create(request: request)
     }
     
-    func makeResource() -> Resource<Treatment> {
-        return Resource(
-            index: index,
-            store: create,
-            show: show,
-            replace: replace,
-            modify: update,
-            destroy: delete,
-            clear: clear
-        )
+//    func makeResource() -> Resource<Treatment> {
+//        return Resource(
+//            index: index,
+//            store: create,
+//            show: show,
+//            replace: replace,
+//            modify: update,
+//            destroy: delete,
+//            clear: clear
+//        )
+//    }
+    
+    func commentsIndex(request: Request, treatment: Treatment) throws -> ResponseRepresentable {
+        let children = try treatment.comments()
+        return try JSON(node: children.makeNode())
     }
+    
 }
 
 extension Request {

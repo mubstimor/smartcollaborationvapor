@@ -56,6 +56,9 @@ club.addRoutes(drop: drop)
 let injury = InjuryController()
 injury.addRoutes(drop: drop)
 
+let treatment = TreatmentController()
+treatment.addRoutes(drop: drop)
+
 let protect = ProtectMiddleware(error:
     Abort.custom(status: .forbidden, message: "Not authorized.!")
 )
@@ -72,7 +75,7 @@ drop.resource("countries", CountryController())
 //drop.resource("clubs", ClubController())
 drop.resource("players", PlayerController())
 //drop.resource("injuries", InjuryController())
-drop.resource("treatments", TreatmentController())
+//drop.resource("treatments", TreatmentController())
 drop.resource("feedbacks", FeedbackController())
 drop.resource("subscriptions", SubscriptionController())
 drop.resource("specialists", SpecialistController())

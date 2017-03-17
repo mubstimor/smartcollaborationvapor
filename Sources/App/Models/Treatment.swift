@@ -72,3 +72,10 @@ final class Treatment: Model {
     }
 }
 
+
+extension Treatment{
+    func comments() throws -> [Treatment] {
+        return try children(nil, Treatment.self).all()
+    }
+}
+
