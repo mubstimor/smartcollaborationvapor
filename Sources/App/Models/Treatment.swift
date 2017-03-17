@@ -74,8 +74,8 @@ final class Treatment: Model {
 
 
 extension Treatment{
-    func comments() throws -> [Treatment] {
-        return try children(nil, Treatment.self).all()
+    func comments() throws -> [Feedback] {
+        return try children(nil, Feedback.self).all()
     }
 }
 
