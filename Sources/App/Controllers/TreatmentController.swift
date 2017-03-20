@@ -54,6 +54,7 @@ final class TreatmentController{
         treatment.diet_suggestions = new.diet_suggestions
         treatment.side_effects_from_previous_treatment = new.side_effects_from_previous_treatment
         treatment.specialist_suggestions = new.specialist_suggestions
+        treatment.next_appointment = new.next_appointment
         treatment.specialist_id = new.specialist_id
         try treatment.save()
         return treatment

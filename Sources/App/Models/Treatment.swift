@@ -17,16 +17,18 @@ final class Treatment: Model {
     var side_effects_from_previous_treatment: String
     var diet_suggestions: String
     var specialist_suggestions: String
+    var next_appointment: String
     var specialist_id: Node?
     var exists: Bool = false
     
-    init(injury_id: Node? = nil, dateOfTreatment: String, statusFromAssessment: String, sideEffectsFromPreviousTreatment: String, dietSuggestions: String, specialistSuggestions: String, specialist_id: Node? = nil) {
+    init(injury_id: Node? = nil, dateOfTreatment: String, statusFromAssessment: String, sideEffectsFromPreviousTreatment: String, dietSuggestions: String, specialistSuggestions: String, next_appointment: String, specialist_id: Node? = nil) {
         self.injury_id = injury_id
         self.date_of_treatment = dateOfTreatment
         self.status_from_assessment = statusFromAssessment
         self.side_effects_from_previous_treatment = sideEffectsFromPreviousTreatment
         self.diet_suggestions = dietSuggestions
         self.specialist_suggestions = specialistSuggestions
+        self.next_appointment = next_appointment
         self.specialist_id = specialist_id
     }
     
@@ -38,6 +40,7 @@ final class Treatment: Model {
         side_effects_from_previous_treatment = try node.extract("side_effects_from_previous_treatment")
         diet_suggestions = try node.extract("diet_suggestions")
         specialist_suggestions = try node.extract("specialist_suggestions")
+        next_appointment = try node.extract("next_appointment")
         specialist_id = try node.extract("specialist_id")
     }
     
@@ -50,6 +53,7 @@ final class Treatment: Model {
             "side_effects_from_previous_treatment": side_effects_from_previous_treatment,
             "diet_suggestions": diet_suggestions,
             "specialist_suggestions": specialist_suggestions,
+            "next_appointment": next_appointment,
             "specialist_id": specialist_id
             ])
     }
@@ -63,6 +67,7 @@ final class Treatment: Model {
             treatments.string("side_effects_from_previous_treatment")
             treatments.string("diet_suggestions")
             treatments.string("specialist_suggestions")
+            treatments.string("next_appointment")
             treatments.parent(Specialist.self, optional: false)
         }
     }
