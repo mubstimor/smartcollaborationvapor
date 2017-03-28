@@ -54,9 +54,9 @@ final class SmartController{
     
     func processPayment(request: Request) throws -> ResponseRepresentable{
         
-        guard let card_number = request.data["card_number"]?.string else{
-            throw Abort.badRequest
-        }
+//        guard let card_number = request.data["card_number"]?.string else{
+//            throw Abort.badRequest
+//        }
         
         let stripe = VaporStripe(apiKey: "sk_test_...", token: "sometoken")
         let result = try stripe.charge(amount: 99, currency: .usd, description: "My description")
