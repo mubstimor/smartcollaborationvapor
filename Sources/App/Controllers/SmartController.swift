@@ -61,7 +61,7 @@ final class SmartController{
         let stripe = VaporStripe(apiKey: "sk_test_...", token: "sometoken")
         let result = try stripe.charge(amount: 99, currency: .usd, description: "My description")
         //        let injuries = try Injury.query().filter("club_id", card_number).all()
-        return try JSON(node: result)
+        return try JSON(node: ["message": "\(result)"])
     }
     
     func appointments(request: Request) throws -> ResponseRepresentable{
