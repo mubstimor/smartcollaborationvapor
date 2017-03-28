@@ -63,7 +63,7 @@ final class SmartController{
             throw Abort.badRequest
         }
         
-        let amountNo = Int(amount)
+        let amountNo = Int(amount)!
 
         
         let stripe = VaporStripe(apiKey: "pk_test_l16tKjznZXsWu7xH28f40Q6s", token: token)
