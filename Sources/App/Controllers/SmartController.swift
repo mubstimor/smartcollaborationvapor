@@ -65,9 +65,9 @@ final class SmartController{
         
         let amountNo = Int(amount)!
 
-        
-        let stripe = VaporStripe(apiKey: "sk_test_sJofmAULIyYNFHMKsopEclQG", token: token)
-        let result = try stripe.charge(amount: amountNo, currency: .gpd, description: "My description")
+        let api_key = Env["STRIPE_SECRET_KEY"]
+        let stripe = VaporStripe(apiKey: api_key, token: token)
+        let result = try stripe.charge(amount: amountNo, currency: .gbp, description: "My description")
         //        let injuries = try Injury.query().filter("club_id", card_number).all()
         return try JSON(node: ["message": "\(result)"])
     }
