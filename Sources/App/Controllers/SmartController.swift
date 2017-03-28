@@ -9,6 +9,7 @@
 import Vapor
 import HTTP
 import VaporPostgreSQL
+import VaporStripe
 
 final class SmartController{
     
@@ -18,6 +19,7 @@ final class SmartController{
         drop.get("dbversion", handler: dbversion)
         drop.post("name", handler: postName)
         drop.post("clubinjuries", handler: clubInjuries)
+        drop.get("appointments", handler: appointments)
     }
 
     func dbversion(request: Request) throws -> ResponseRepresentable{
@@ -45,15 +47,27 @@ final class SmartController{
         guard let club_id = request.data["club_id"]?.string else{
             throw Abort.badRequest
         }
-        
-//        let user_club_id = try request.user().club_id
+
         let injuries = try Injury.query().filter("club_id", club_id).all()
         return try JSON(injuries.makeNode())
-
-//
-//        return try JSON(node:[
-//            "message":"Hello \(club_id)"
-//            ])
+    }
+    
+    func processPayment(request: Request) throws -> ResponseRepresentable{
+        
+        guard let card_number = request.data["card_number"]?.string else{
+            throw Abort.badRequest
+        }
+        
+        let result = try stripe.charge(amount: 99, currency: .usd, description: "My description")
+        //        let injuries = try Injury.query().filter("club_id", card_number).all()
+        return try JSON(result.makeNode())
+    }
+    
+    func appointments(request: Request) throws -> ResponseRepresentable{
+        
+        let appointments = try Treatment.query().union(Injury.self)
+            .union(Specialist.self).all()
+        return try JSON(appointments.makeNode())
     }
     
     
