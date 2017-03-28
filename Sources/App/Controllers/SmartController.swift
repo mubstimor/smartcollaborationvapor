@@ -20,6 +20,7 @@ final class SmartController{
         drop.post("name", handler: postName)
         drop.post("clubinjuries", handler: clubInjuries)
         drop.get("appointments", handler: appointments)
+        drop.get("charge", handler: processPayment)
     }
 
     func dbversion(request: Request) throws -> ResponseRepresentable{
@@ -54,12 +55,14 @@ final class SmartController{
     
     func processPayment(request: Request) throws -> ResponseRepresentable{
         
-//        guard let card_number = request.data["card_number"]?.string else{
-//            throw Abort.badRequest
-//        }
+        guard let card_number = request.data["Token"]?.string else{
+            throw Abort.badRequest
+        }
+        let amount = Int(request.data["Amount"]?.string)
+
         
         let stripe = VaporStripe(apiKey: "sk_test_...", token: "sometoken")
-        let result = try stripe.charge(amount: 99, currency: .usd, description: "My description")
+        let result = try stripe.charge(amount: amount, currency: .gpd, description: "My description")
         //        let injuries = try Injury.query().filter("club_id", card_number).all()
         return try JSON(node: ["message": "\(result)"])
     }
