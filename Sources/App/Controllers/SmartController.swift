@@ -20,7 +20,7 @@ final class SmartController{
         drop.post("name", handler: postName)
         drop.post("clubinjuries", handler: clubInjuries)
         drop.get("appointments", handler: appointments)
-        drop.get("charge", handler: processPayment)
+        drop.post("charge", handler: processPayment)
     }
 
     func dbversion(request: Request) throws -> ResponseRepresentable{
