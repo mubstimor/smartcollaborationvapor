@@ -17,4 +17,3 @@ let package = Package(
 )
 
 // .Package(url:"https://github.com/anthonycastelli/vapor-stripe.git", majorVersion: 0, minor: 3)
-// .Package(url:"https://github.com/gomfucius/vapor-stripe.git", majorVersion: 0, minor: 2)
