@@ -1,9 +1,12 @@
 <?php 
 
-require_once('vendor/autoload.php')
+//require_once("vendor/autoload.php")
+require_once('vendor/stripe/stripe-php/init.php');
+
 
 // set api keys
-\Stripe\Stripe::setApiKey('sk_test_sJofmAULIyYNFHMKsopEclQG');
+
+\Stripe\Stripe::setApiKey("sk_test_sJofmAULIyYNFHMKsopEclQG");
 
 $token = $_POST['Token'];
 $amount = $_POST['Amount'];
@@ -28,9 +31,13 @@ try {
 
  header('Content-Type: application/json');
  echo json_encode($response);
+ 
 } catch(\Stripe\Error\Card $e) {
  // The card has been declined
 header('Content-Type: application/json');
+ echo json_encode($response);
+}catch(\Stripe\Error\Authentication $e){
+    header('Content-Type: application/json');
  echo json_encode($response);
 }
 

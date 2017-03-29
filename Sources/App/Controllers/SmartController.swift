@@ -9,7 +9,6 @@
 import Vapor
 import HTTP
 import VaporPostgreSQL
-import VaporStripe
 
 final class SmartController{
     
@@ -20,7 +19,6 @@ final class SmartController{
         drop.post("name", handler: postName)
         drop.post("clubinjuries", handler: clubInjuries)
         drop.get("appointments", handler: appointments)
-        drop.post("charge", handler: processPayment)
     }
 
     func dbversion(request: Request) throws -> ResponseRepresentable{
@@ -52,31 +50,7 @@ final class SmartController{
         let injuries = try Injury.query().filter("club_id", club_id).all()
         return try JSON(injuries.makeNode())
     }
-    
-    func processPayment(request: Request) throws -> ResponseRepresentable{
-        
-        guard let token = request.data["Token"]?.string else{
-            throw Abort.badRequest
-        }
-        
-        guard let amount = request.data["Amount"]?.string else{
-            throw Abort.badRequest
-        }
-        
-        let amountNo = Int(amount)!
 
-//        let keys = "$STRIPE_SECRET_KEY"
-        let api_key = "sk_test_sJofmAULIyYNFHMKsopEclQG"
-        let stripe = VaporStripe(apiKey: api_key, token: token)
-        
-//        let stripe = VStripe(apiKey: api_key, token: token)
-//        let result = try stripe.charge(amount: 99, in: .usd, description: "Payment for subscription")
-        
-        let result = try stripe.charge(amount: amountNo, currency: .usd, description: "Payment for subscription")
-        //        let injuries = try Injury.query().filter("club_id", card_number).all()
-//        result.json
-        return try JSON(node: ["message": "\(result.json)"])
-    }
     
     func appointments(request: Request) throws -> ResponseRepresentable{
         
