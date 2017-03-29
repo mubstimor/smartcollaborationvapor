@@ -67,7 +67,7 @@ final class SmartController{
 
 //        let keys = "$STRIPE_SECRET_KEY"
         let api_key = "sk_test_sJofmAULIyYNFHMKsopEclQG"
-        let stripe = VaporStripe(apiKey: api_key, token: token)
+//        let stripe = VaporStripe(apiKey: api_key, token: token)
         
         let stripe = VStripe(apiKey: api_key, token: token)
         let result = try stripe.charge(amount: 99, in: .usd, description: "Payment for subscription")
