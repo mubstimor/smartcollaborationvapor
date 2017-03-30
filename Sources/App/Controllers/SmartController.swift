@@ -54,10 +54,11 @@ final class SmartController{
     
     // assign user to default subscription package
     func create_club_subscription(request: Request) throws -> ResponseRepresentable{
-        
+      
+        /*
         guard let club_id = request.data["club_id"]?.string else{
             throw Abort.badRequest
-        }
+        } */
         
         guard let email = request.data["email"]?.string else{
             throw Abort.badRequest
@@ -74,9 +75,10 @@ final class SmartController{
             let stripeResponse = try drop.client.post("https://smartcollaborationstripe.herokuapp.com/customer.php", headers: [
                 "Content-Type": "application/x-www-form-urlencoded"
                 ], body: Body.data( Node(dictionary).formURLEncoded()))
-            
+        
+        
             return try JSON(node:[
-                "message":"\(stripeResponse)"
+                "message":"\(stripeResponse.data)", "body": "\(stripeResponse.body)"
                 ])
 
         //}else{
