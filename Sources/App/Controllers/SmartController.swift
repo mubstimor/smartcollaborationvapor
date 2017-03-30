@@ -79,11 +79,13 @@ final class SmartController{
                 "message":"\(stripeResponse)"
                 ])
 
+        }else{
+            return try JSON(node:[
+                "message":"Unable to create package"
+                ])
         }
 
-        
-        let injuries = try Injury.query().filter("club_id", club_id).all()
-        return try JSON(injuries.makeNode())
+       
     }
 
 
