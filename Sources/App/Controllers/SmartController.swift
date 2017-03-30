@@ -64,7 +64,7 @@ final class SmartController{
         }
         
         // if user is the first to register from a given club, create a sub package for them
-        if try Specialist.query().filter("club_id", club_id).first() == nil {
+        //if try Specialist.query().filter("club_id", club_id).first() == nil {
             
             let dictionary:Node = [
                 "email": Node.string(email)
@@ -79,11 +79,11 @@ final class SmartController{
                 "message":"\(stripeResponse)"
                 ])
 
-        }else{
-            return try JSON(node:[
-                "message":"Unable to create package"
-                ])
-        }
+        //}else{
+          //  return try JSON(node:[
+          //      "message":"Unable to create package"
+          //      ])
+        //}
 
        
     }
