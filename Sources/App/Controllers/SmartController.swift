@@ -19,6 +19,7 @@ final class SmartController{
         drop.post("name", handler: postName)
         drop.post("clubinjuries", handler: clubInjuries)
         drop.get("appointments", handler: appointments)
+        drop.post("club_subscription", handler: create_club_subscription)
     }
 
     func dbversion(request: Request) throws -> ResponseRepresentable{
@@ -50,6 +51,41 @@ final class SmartController{
         let injuries = try Injury.query().filter("club_id", club_id).all()
         return try JSON(injuries.makeNode())
     }
+    
+    // assign user to default subscription package
+    func create_club_subscription(request: Request) throws -> ResponseRepresentable{
+        
+        guard let club_id = request.data["club_id"]?.string else{
+            throw Abort.badRequest
+        }
+        
+        guard let email = request.data["email"]?.string else{
+            throw Abort.badRequest
+        }
+        
+        // if user is the first to register from a given club, create a sub package for them
+        if try Specialist.query().filter("club_id", club_id).first() == nil {
+            
+            let dictionary:Node = [
+                "email": Node.string(email)
+            ]
+            
+            // send request to stripe server
+            let stripeResponse = try drop.client.post("https://smartcollaborationstripe.herokuapp.com/customer.php", headers: [
+                "Content-Type": "application/x-www-form-urlencoded"
+                ], body: Body.data( Node(dictionary).formURLEncoded()))
+            
+            return try JSON(node:[
+                "message":"\(stripeResponse)"
+                ])
+
+        }
+
+        
+        let injuries = try Injury.query().filter("club_id", club_id).all()
+        return try JSON(injuries.makeNode())
+    }
+
 
     
     func appointments(request: Request) throws -> ResponseRepresentable{

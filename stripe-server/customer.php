@@ -7,10 +7,7 @@ $my_stripe_key = getenv('STRIPE_KEY');
 // array for JSON response
 $response = array();
 
-    $token = $_REQUEST['Token'];
-    $amount = $_REQUEST['Amount'];
-    $currency = $_REQUEST['currency'];
-    $description = $_REQUEST['description'];
+    $email = $_REQUEST['email'];
 
     // $response['starting-params'] = $token .'-'. $currency. '-'. $description. '- amt - '. $amount;
 
@@ -18,22 +15,24 @@ $response = array();
 
 try {
 
-    $charge = \Stripe\Charge::create(array('amount' => $amount*100, 'currency' => $currency, 'source' => $token, 'description' => $description ));
+    $customer = \Stripe\Customer::create(array('email' => $email ));
 
   // Check that it was paid:
-    if ($charge->paid == true) {
+    if ($customer->id != '') {
         $response['status'] = "Success";
-        $response['message'] = "Payment has been charged!!";
+        $response['message'] = "customer has been created!!";
+        $response['customer_id'] = $customer->id;
+        $response['email'] = $customer->email; 
+
+         $subscription = \Stripe\Subscription::create(array('customer' => $customer->id, 'plan' => 'basic-monthly' ));
+         $response['subscription_id'] = $subscription->id;
+
+
      } else { // Charge was not paid!
         $response['Failure'] = "Failure";
-        $response['message'] = "Your payment could NOT be processed because the payment system rejected the transaction. You can try again or use another card.";
+        $response['message'] = "Failed to create customer.";
     }
 
-}
-catch(\Stripe\Error\Card $e) {
- $body = $e->getJsonBody();
-    $err  = $body['error'];
-    $response["error"] = $err['message'];
 }
 catch(\Stripe\Error\Authentication $e){
     $body = $e->getJsonBody();
@@ -46,7 +45,9 @@ catch(\Stripe\Error\InvalidRequest $e){
     $response["error"] = $err['message'];
 }
 catch(\Stripe\Error\Base $e){
-    $response["error"] = "unable to process payment";
+    $body = $e->getJsonBody();
+    $err  = $body['error'];
+    $response["error"] = $err['message'];
 }
 
 
