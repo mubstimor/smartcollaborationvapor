@@ -28,6 +28,7 @@ final class ClubController {
         clubs.get(Club.self, "specialists", handler: specialistsIndex)
         clubs.get(Club.self, "players", handler: playersIndex)
         clubs.get(Club.self, "injuries", handler: playersIndex)
+        clubs.get(Club.self, "subscriptions", handler: subscriptionsIndex)
     }
     
     func index(request: Request) throws -> ResponseRepresentable {
@@ -89,6 +90,11 @@ final class ClubController {
     
     func playersIndex(request: Request, club: Club) throws -> ResponseRepresentable {
         let children = try club.players()
+        return try JSON(node: children.makeNode())
+    }
+    
+    func subscriptionsIndex(request: Request, club: Club) throws -> ResponseRepresentable {
+        let children = try club.subscriptions()
         return try JSON(node: children.makeNode())
     }
     

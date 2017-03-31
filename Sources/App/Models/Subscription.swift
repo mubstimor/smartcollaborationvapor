@@ -15,14 +15,18 @@ final class Subscription: Model {
     var date_paid: String
     var amount_paid: Double
     var date_of_next_payment: String
+    var payment_id: String
+    var status: String
     var club_id: Node?
     var exists: Bool = false
     
-    init(package: String, datePaid: String, amountPaid: Double, dateOfNextPayment: String, club_id: Node? = nil) {
+    init(package: String, datePaid: String, amountPaid: Double, dateOfNextPayment: String, paymentId: String, status: String, club_id: Node? = nil) {
         self.package = package
         self.date_paid = datePaid
         self.amount_paid = amountPaid
         self.date_of_next_payment = dateOfNextPayment
+        self.payment_id = paymentId
+        self.status = status
         self.club_id = club_id
     }
     
@@ -32,6 +36,8 @@ final class Subscription: Model {
         date_paid = try node.extract("date_paid")
         amount_paid = try node.extract("amount_paid")
         date_of_next_payment = try node.extract("date_of_next_payment")
+        payment_id = try node.extract("payment_id")
+        status = try node.extract("status")
         club_id = try node.extract("club_id")
     }
     
@@ -42,6 +48,8 @@ final class Subscription: Model {
             "date_paid": date_paid,
             "amount_paid": amount_paid,
             "date_of_next_payment": date_of_next_payment,
+            "payment_id": payment_id,
+            "status": status,
             "club_id": club_id
             ])
     }
@@ -53,6 +61,8 @@ final class Subscription: Model {
             subscriptions.string("date_paid")
             subscriptions.string("amount_paid")
             subscriptions.string("date_of_next_payment")
+            subscriptions.string("payment_id")
+            subscriptions.string("status")
            subscriptions.parent(Club.self, optional: false)
         }
     }

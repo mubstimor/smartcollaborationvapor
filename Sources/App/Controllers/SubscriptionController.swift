@@ -43,6 +43,8 @@ final class SubscriptionController: ResourceRepresentable {
         subscription.date_paid = new.date_paid
         subscription.amount_paid = new.amount_paid
         subscription.date_of_next_payment = new.date_of_next_payment
+        subscription.payment_id = new.payment_id
+        subscription.status = new.status
         subscription.club_id = new.club_id
         try subscription.save()
         return subscription
