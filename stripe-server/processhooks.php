@@ -23,12 +23,28 @@ $event = \Stripe\Event::retrieve($event_json->id);
 
     if($event_type == "customer.subscription.created"){
          mail($email, "Stripe Hook", "subscription for client created");
-    }else if($event_type == "invoice.payment_failed"){
+    }
+    else if($event_type == "invoice.payment_failed"){
         // convert amount to pounds
          $amount = sprintf('%0.2f', $event->data->object->amount_due / 100.0);
-        notifyAppOnFailedTransaction($customer->id, $amount);
-        mail($email, "Stripe Hook", "Transaction for ".$amount."failed");
+        notifyAppOnTransaction($customer->id, $amount, 'pending');
+        mail($email, "Payment for subscription unsuccessful", "Transaction for ".$amount."failed");
     }
+    else if($event_type == "invoice.payment_succeeded"){
+        $amount = sprintf('%0.2f', $event->data->object->amount_due / 100.0);
+        notifyAppOnTransaction($customer->id, $amount, 'active');
+        mail($email, "Payment Received", "Transaction for ".$amount."successful");
+    }
+    else if($event_type == "customer.subscription.updated"){
+        // billing period updated
+
+    }
+    else if($event_type == "customer.subscription.deleted"){
+        $amount = sprintf('%0.2f', $event->data->object->amount_due / 100.0);
+        notifyAppOnTransaction($customer->id, $amount, 'deactivated');
+        mail($email, "Subscription ended", "Subscription for account has been deactivated.");
+    }
+
  }
 
 http_response_code(200); 
@@ -53,7 +69,7 @@ catch(\Stripe\Error\Base $e){
     echo "unable to process payment";
 }
 
-function notifyAppOnFailedTransaction($customer, $amount){
+function notifyAppOnTransaction($customer, $amount, $status){
 // Your ID and token
 $blogID = '8070105920543249955';
 $authToken = 'xzcdsfrfawskfesd';
@@ -62,7 +78,7 @@ $authToken = 'xzcdsfrfawskfesd';
 $postData = array(
     'customer_id' => $customer,
     'amount' => $amount,
-    'status' => 'pending_payment'
+    'status' => $status
 );
 
 // Create the context for the request

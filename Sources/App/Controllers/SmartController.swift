@@ -20,7 +20,8 @@ final class SmartController{
         drop.post("clubinjuries", handler: clubInjuries)
         drop.get("appointments", handler: appointments)
         drop.post("club_subscription", handler: create_club_subscription)
-        drop.post("paymentupdates", handler: processFailedPayments)
+        drop.post("paymentupdates", handler: processPayments)
+        drop.post("updatepackage", handler: updatePackage)
     }
 
     func dbversion(request: Request) throws -> ResponseRepresentable{
@@ -79,7 +80,7 @@ final class SmartController{
         
         
             return try JSON(node:[
-                "message":"\(stripeResponse.json)"
+                "message": stripeResponse.json!
                 ])
 
         //}else{
@@ -91,7 +92,7 @@ final class SmartController{
        
     }
     
-    func processFailedPayments(request: Request) throws -> ResponseRepresentable{
+    func processPayments(request: Request) throws -> ResponseRepresentable{
         
         guard let customer_id = request.data["customer_id"]?.string else{
             throw Abort.badRequest
@@ -109,6 +110,43 @@ final class SmartController{
         // update returned subscription object
         subscription?.amount_paid = Double(amount)!
         subscription?.status = status
+        try subscription?.save()
+        return try JSON(subscription!.makeNode())
+    }
+    
+    func updatePackage(request: Request) throws -> ResponseRepresentable{
+        
+        guard let customer_id = request.data["payment_id"]?.string else{
+            throw Abort.badRequest
+        }
+        
+        guard let amount = request.data["amount_paid"]?.string else{
+            throw Abort.badRequest
+        }
+        
+        guard let date_paid = request.data["date_paid"]?.string else{
+            throw Abort.badRequest
+        }
+        
+        guard let next_payment = request.data["date_of_next_payment"]?.string else{
+            throw Abort.badRequest
+        }
+        
+        guard let status = request.data["status"]?.string else{
+            throw Abort.badRequest
+        }
+        
+        guard let sub_package = request.data["package"]?.string else{
+            throw Abort.badRequest
+        }
+        
+        var subscription = try Subscription.query().filter("payment_id", customer_id).first()
+        // update returned subscription object
+        subscription?.amount_paid = Double(amount)!
+        subscription?.status = status
+        subscription?.date_of_next_payment = next_payment
+        subscription?.date_paid = date_paid
+        subscription?.package = sub_package
         try subscription?.save()
         return try JSON(subscription!.makeNode())
     }
