@@ -7,6 +7,7 @@ $my_stripe_key = getenv('STRIPE_KEY');
 // array for JSON response
 $response = array();
 
+if(isset($_REQUEST['Token'])){
     $token = $_REQUEST['Token'];
     $amount = $_REQUEST['Amount'];
     $currency = $_REQUEST['currency'];
@@ -54,5 +55,7 @@ header('Content-Type: application/json');
 echo json_encode($response);
 //echo $charge;
 
-
+}else{
+    echo "Missing information in request";
+}
 ?>

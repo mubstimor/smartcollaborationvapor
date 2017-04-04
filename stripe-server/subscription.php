@@ -24,6 +24,7 @@ try {
   // Check that it was paid:
     if ($subscription->id != '') {
         $response['status'] = "Success";
+        $response['subscription_id'] = $subscription->id;
         $response['customer_id'] = $subscription->customer;
         $response['subscription_status'] = $subscription->status;
         $response['plan'] = $subscription->plan->id;

@@ -20,6 +20,7 @@ final class SmartController{
         drop.post("clubinjuries", handler: clubInjuries)
         drop.get("appointments", handler: appointments)
         drop.post("club_subscription", handler: create_club_subscription)
+        drop.post("paymentupdates", handler: processFailedPayments)
     }
 
     func dbversion(request: Request) throws -> ResponseRepresentable{
@@ -88,6 +89,28 @@ final class SmartController{
         //}
 
        
+    }
+    
+    func processFailedPayments(request: Request) throws -> ResponseRepresentable{
+        
+        guard let customer_id = request.data["customer_id"]?.string else{
+            throw Abort.badRequest
+        }
+        
+        guard let amount = request.data["amount"]?.string else{
+            throw Abort.badRequest
+        }
+        
+        guard let status = request.data["status"]?.string else{
+            throw Abort.badRequest
+        }
+        
+        var subscription = try Subscription.query().filter("payment_id", customer_id).first()
+        // update returned subscription object
+        subscription?.amount_paid = Double(amount)!
+        subscription?.status = status
+        try subscription?.save()
+        return try JSON(subscription!.makeNode())
     }
 
 

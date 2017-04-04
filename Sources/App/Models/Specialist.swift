@@ -75,6 +75,10 @@ final class Specialist: Model, User {
                 throw Abort.custom(status: .badRequest, message: "can't load club with id \(club_id)")
             }
             
+//            guard let club_subscription = try Subscription.query().filter("id", club_id).first() else{
+//                throw Abort.custom(status: .badRequest, message: "can't load club with id \(club_id)")
+//            }
+            
             if userEmail.hasSuffix(club.email_extension) {
                 // save user
                 try newUser.save()
