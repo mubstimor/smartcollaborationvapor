@@ -9,7 +9,18 @@
 import Vapor
 import HTTP
 
-final class PlayerController: ResourceRepresentable {
+final class PlayerController {
+    
+    func addRoutes(drop: Droplet){
+        let players = drop.grouped("players")
+        players.get(handler: index)
+        players.post(handler: create)
+        players.get(Player.self, handler: show)
+        players.patch(Player.self, handler: update)
+        players.delete(Player.self, handler: delete)
+        players.get(Player.self, "injuries", handler: playerInjuries)
+    }
+
     
     func index(request: Request) throws -> ResponseRepresentable {
         return try Player.all().makeNode().converted(to: JSON.self)
@@ -57,17 +68,17 @@ final class PlayerController: ResourceRepresentable {
         return try JSON(node: children.makeNode())
     }
     
-    func makeResource() -> Resource<Player> {
-        return Resource(
-            index: index,
-            store: create,
-            show: show,
-            replace: replace,
-            modify: update,
-            destroy: delete,
-            clear: clear
-        )
-    }
+//    func makeResource() -> Resource<Player> {
+//        return Resource(
+//            index: index,
+//            store: create,
+//            show: show,
+//            replace: replace,
+//            modify: update,
+//            destroy: delete,
+//            clear: clear
+//        )
+//    }
 }
 
 extension Request {
