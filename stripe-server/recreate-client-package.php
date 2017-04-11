@@ -20,7 +20,9 @@ if(isset($_REQUEST['Token'])){
 
 try {
    
-    $customer = \Stripe\Customer::create(array('email' => $email, 'card' => $token ));
+    $customer = \Stripe\Customer::retrieve($customer_id);
+    $customer->sources->create(array("source" => $token));
+    // $customer = \Stripe\Customer::create(array('email' => $email, 'card' => $token ));
 
         
 // set users to yearly plan

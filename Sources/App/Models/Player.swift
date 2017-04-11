@@ -62,6 +62,10 @@ final class Player: Model {
     }
 }
 
-extension Player {
 
+extension Player{
+    func injuries() throws -> [Injury] {
+        return try children(nil, Injury.self).all()
+    }
+   
 }

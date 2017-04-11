@@ -27,6 +27,7 @@ try {
         $response['subscription_id'] = $subscription->id;
         $response['customer_id'] = $subscription->customer;
         $response['subscription_status'] = $subscription->status;
+        $response['subscription_end'] = $subscription->current_period_end;
         $response['plan'] = $subscription->plan->id;
         $response['plan_name'] = $subscription->plan->name;
         $response['plan_interval'] = $subscription->plan->interval;

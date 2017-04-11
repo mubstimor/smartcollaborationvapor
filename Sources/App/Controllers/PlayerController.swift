@@ -52,6 +52,11 @@ final class PlayerController: ResourceRepresentable {
         return try create(request: request)
     }
     
+    func playerInjuries(request: Request, player: Player) throws -> ResponseRepresentable {
+        let children = try player.injuries()
+        return try JSON(node: children.makeNode())
+    }
+    
     func makeResource() -> Resource<Player> {
         return Resource(
             index: index,
