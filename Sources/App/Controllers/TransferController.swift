@@ -39,7 +39,7 @@ final class TransferController: ResourceRepresentable {
         let new = try request.transfer()
         var transfer = transfer
         transfer.player_id = new.player_id
-        transfer.from_club = new.from_club
+        transfer.club_id = new.club_id
         transfer.to_club = new.to_club
         transfer.transfer_date = new.transfer_date
         try transfer.save()
