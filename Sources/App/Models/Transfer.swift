@@ -13,14 +13,14 @@ final class Transfer: Model {
     
     var id: Node?
     var player_id: Node?
-    var from_club: Node?
+    var club_id: Node?
     var to_club: String
     var transfer_date: String
     var exists: Bool = false
     
-    init(player_id: Node? = nil, from_club: Node? = nil, to_club: String, transfer_date: String) {
+    init(player_id: Node? = nil, club_id: Node? = nil, to_club: String, transfer_date: String) {
         self.player_id = player_id
-        self.from_club = from_club
+        self.club_id = club_id
         self.to_club = to_club
         self.transfer_date = transfer_date
     }
@@ -28,7 +28,7 @@ final class Transfer: Model {
     init(node: Node, in context: Context) throws {
         id = try node.extract("id")
         player_id = try node.extract("player_id")
-        from_club = try node.extract("from_club")
+        club_id = try node.extract("club_id")
         to_club = try node.extract("to_club")
         transfer_date = try node.extract("transfer_date")
     }
@@ -37,7 +37,7 @@ final class Transfer: Model {
         return try Node(node: [
             "id": id,
             "player_id": player_id,
-            "from_club": from_club,
+            "club_id": club_id,
             "to_club": to_club,
             "transfer_date": transfer_date
             ])
