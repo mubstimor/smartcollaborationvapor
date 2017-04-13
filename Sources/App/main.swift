@@ -84,5 +84,6 @@ drop.resource("feedbacks", FeedbackController())
 drop.resource("subscriptions", SubscriptionController())
 drop.resource("specialists", SpecialistController())
 drop.resource("fixtures", FixtureController())
+drop.resource("transfers", TransferController())
 
 drop.run()
