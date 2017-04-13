@@ -38,12 +38,10 @@ final class TransferController: ResourceRepresentable {
     func update(request: Request, transfer: Transfer) throws -> ResponseRepresentable {
         let new = try request.transfer()
         var transfer = transfer
-        transfer.league_id = new.league_id
-        transfer.name = new.name
-        transfer.game_date = new.game_date
-        transfer.game_time = new.game_time
-        transfer.home_team = new.home_team
-        transfer.away_team = new.away_team
+        transfer.player_id = new.player_id
+        transfer.from_club = new.from_club
+        transfer.to_club = new.to_club
+        transfer.transfer_date = new.transfer_date
         try transfer.save()
         return transfer
     }
