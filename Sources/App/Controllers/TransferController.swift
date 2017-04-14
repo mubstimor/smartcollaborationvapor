@@ -18,6 +18,17 @@ final class TransferController: ResourceRepresentable {
     func create(request: Request) throws -> ResponseRepresentable {
         var transfer = try request.transfer()
         try transfer.save()
+        
+        // update player's club id
+        let player_id = transfer.player_id!
+        var player = try Player.query().filter("id", player_id).first()
+//        player?.name = new.name
+//        player?.weight = new.weight
+//        player?.date_of_birth = new.date_of_birth
+//        player?.dominant_leg = new.dominant_leg
+        player?.club_id = Node.string(transfer.to_club)
+        try player?.save()
+        
         return transfer
     }
     
