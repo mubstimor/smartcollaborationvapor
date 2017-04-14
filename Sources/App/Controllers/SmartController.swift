@@ -9,6 +9,7 @@
 import Vapor
 import HTTP
 import VaporPostgreSQL
+import Foundation
 
 final class SmartController{
     
@@ -19,6 +20,7 @@ final class SmartController{
         drop.post("name", handler: postName)
         drop.post("clubinjuries", handler: clubInjuries)
         drop.get("appointments", handler: appointments)
+        drop.get("fixtures_today", handler: get_todays_fixtures)
         drop.post("club_subscription", handler: create_club_subscription)
         drop.post("paymentupdates", handler: processPayments)
         drop.post("updatepackage", handler: updatePackage)
@@ -160,6 +162,24 @@ final class SmartController{
         return try JSON(appointments.makeNode())
     }
     
+    func get_todays_fixtures(request: Request) throws -> ResponseRepresentable{
+        
+//        guard let game_date = request.data["game_date"]?.string else{
+//            throw Abort.badRequest
+//        }
+        
+        let currentDate = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .long
+        dateFormatter.timeStyle = .none
+        
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        
+        let today = dateFormatter.string(from: currentDate) // use current date
+        
+        var fixture = try Fixture.query().filter("game_date", today).all()
+        return try JSON(fixture.makeNode())
+    }
     
     func index(request: Request) throws -> ResponseRepresentable{
     
