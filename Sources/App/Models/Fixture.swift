@@ -19,8 +19,8 @@ final class Fixture: Model {
     var away_team: String
     var exists: Bool = false
     
-    init(injury_id: Node? = nil, name: String, game_date: String, game_time: String, home_team: String, away_team: String) {
-        self.league_id = injury_id
+    init(league_id: Node? = nil, name: String, game_date: String, game_time: String, home_team: String, away_team: String) {
+        self.league_id = league_id
         self.name = name
         self.game_date = game_date
         self.game_time = game_time

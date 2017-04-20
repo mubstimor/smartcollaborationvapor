@@ -63,6 +63,9 @@ treatment.addRoutes(drop: drop)
 let player = PlayerController()
 player.addRoutes(drop: drop)
 
+let concern = KeyConcernController()
+concern.addRoutes(drop: drop)
+
 let protect = ProtectMiddleware(error:
     Abort.custom(status: .forbidden, message: "Not authorized.!")
 )

@@ -67,5 +67,9 @@ extension Player{
     func injuries() throws -> [Injury] {
         return try children(nil, Injury.self).all()
     }
+    
+    func concerns() throws -> [KeyConcern] {
+        return try children(nil, KeyConcern.self).all()
+    }
    
 }

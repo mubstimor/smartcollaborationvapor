@@ -177,7 +177,7 @@ final class SmartController{
         
         let today = dateFormatter.string(from: currentDate) // use current date
         
-        var fixture = try Fixture.query().filter("game_date", today).all()
+        let fixture = try Fixture.query().filter("game_date", today).all()
         return try JSON(fixture.makeNode())
     }
     

@@ -19,6 +19,7 @@ final class PlayerController {
         players.patch(Player.self, handler: update)
         players.delete(Player.self, handler: delete)
         players.get(Player.self, "injuries", handler: playerInjuries)
+        players.get(Player.self, "concerns", handler: playerConcerns)
     }
 
     
@@ -65,6 +66,11 @@ final class PlayerController {
     
     func playerInjuries(request: Request, player: Player) throws -> ResponseRepresentable {
         let children = try player.injuries()
+        return try JSON(node: children.makeNode())
+    }
+
+    func playerConcerns(request: Request, player: Player) throws -> ResponseRepresentable {
+        let children = try player.concerns()
         return try JSON(node: children.makeNode())
     }
     

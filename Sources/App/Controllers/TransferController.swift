@@ -1,11 +1,3 @@
-//
-//  TransferController.swift
-//  SmartCollaborationVapor
-//
-//  Created by Timothy Mubiru on 13/04/2017.
-//
-//
-
 import Vapor
 import HTTP
 
@@ -77,6 +69,4 @@ extension Request {
         return try Transfer(node: json)
     }
 }
-
-
 
