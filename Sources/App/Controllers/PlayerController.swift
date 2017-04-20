@@ -20,6 +20,7 @@ final class PlayerController {
         players.delete(Player.self, handler: delete)
         players.get(Player.self, "injuries", handler: playerInjuries)
         players.get(Player.self, "concerns", handler: playerConcerns)
+        players.get(Player.self, "details", handler: playerDetails)
     }
 
     
@@ -72,6 +73,15 @@ final class PlayerController {
     func playerConcerns(request: Request, player: Player) throws -> ResponseRepresentable {
         let children = try player.concerns()
         return try JSON(node: children.makeNode())
+    }
+    
+    func playerDetails(request: Request, player: Player) throws -> ResponseRepresentable {
+        let concerns = try player.concerns()
+        let injuries = try player.injuries()
+        return try JSON(node: [
+            "injuries": injuries.makeNode(),
+            "concerns" : concerns.makeNode()
+            ])
     }
     
 //    func makeResource() -> Resource<Player> {
