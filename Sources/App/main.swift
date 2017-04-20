@@ -22,6 +22,7 @@ drop.preparations.append(Subscription.self)
 drop.preparations.append(Feedback.self)
 drop.preparations.append(Fixture.self)
 drop.preparations.append(Transfer.self)
+drop.preparations.append(KeyConcern.self)
 
 let auth = AuthMiddleware(user: Specialist.self) { value in
     return Cookie(
