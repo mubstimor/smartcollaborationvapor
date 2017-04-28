@@ -53,7 +53,8 @@ final class SmartController{
         }
 
         let injuries = try Injury.query().filter("club_id", club_id)
-                        .union(Player.self).all()
+                        .union(Player.self)
+                        .union(Club.self).all()
         return try JSON(injuries.makeNode())
     }
     
