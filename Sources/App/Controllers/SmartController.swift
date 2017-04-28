@@ -110,12 +110,14 @@ final class SmartController{
             throw Abort.badRequest
         }
         
-        var subscription = try Subscription.query().filter("payment_id", customer_id).first()
+        guard var subscription = try Subscription.query().filter("payment_id", customer_id).first() else{
+            throw Abort.custom(status: .badRequest, message: "Unable to find subscription")
+        }
         // update returned subscription object
-        subscription?.amount_paid = Double(amount)!
-        subscription?.status = status
-        try subscription?.save()
-        return try JSON(subscription!.makeNode())
+        subscription.amount_paid = Double(amount)!
+        subscription.status = status
+        try subscription.save()
+        return try JSON(subscription.makeNode())
     }
     
     func updatePackage(request: Request) throws -> ResponseRepresentable{
