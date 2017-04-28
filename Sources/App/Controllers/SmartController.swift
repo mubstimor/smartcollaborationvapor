@@ -52,7 +52,8 @@ final class SmartController{
             throw Abort.badRequest
         }
 
-        let injuries = try Injury.query().filter("club_id", club_id).all()
+        let injuries = try Injury.query().filter("club_id", club_id)
+                        .union(Player.self).all()
         return try JSON(injuries.makeNode())
     }
     
