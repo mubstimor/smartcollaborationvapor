@@ -40,6 +40,7 @@ final class SpecialistController: ResourceRepresentable {
     func update(request: Request, specialist: Specialist) throws -> ResponseRepresentable {
         let new = try request.specialist()
         var specialist = specialist
+        specialist.name = new.name
         specialist.email = new.email
         specialist.password = BCrypt.hash(password: new.password)
         specialist.club_id = new.club_id
@@ -76,6 +77,7 @@ extension Specialist: ResponseRepresentable {
         let json = try JSON(node:
             [
                 "id": id,
+                "name": name,
                 "email": email.value,
                 "club_id": club_id,
                 "api_key_id": apiKeyID,

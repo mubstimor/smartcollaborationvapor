@@ -29,13 +29,14 @@ final class AccountController{
     func register(request: Request) throws -> ResponseRepresentable {
         
         guard let email = request.data["email"]?.string,
+            let name = request.data["name"]?.string,
             let password = request.data["password"]?.string,
             let club = request.data["club_id"]?.string else {
                 return try JSON(node: [
                     "error": "Missing Information!"
                     ])
         }
-        let user = try Specialist.register(email: email, password: password, club_id: club)
+        let user = try Specialist.register(name: name, email: email, password: password, club_id: club)
         
         let credentials = UsernamePassword(username: email, password: password)
         try request.auth.login(credentials)

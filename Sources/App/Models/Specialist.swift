@@ -16,6 +16,7 @@ import Auth
 final class Specialist: Model, User {
     
     var id: Node?
+    var name: String
     var email: Valid<EmailValidator>
     var password: String
     var club_id: String
@@ -23,7 +24,8 @@ final class Specialist: Model, User {
     var apiKeySecret = URandom().secureToken
     var exists: Bool = false
     
-    init(email: String, password: String, club_id: String) throws {
+    init(name: String, email: String, password: String, club_id: String) throws {
+        self.name = name
         self.email = try email.validated()
         self.password = BCrypt.hash(password: password)
         self.club_id = club_id
@@ -32,6 +34,7 @@ final class Specialist: Model, User {
     init(node: Node, in context: Context) throws {
         id = try node.extract("id")
 //        let emailString = try node.extract("email") as String
+        name = try node.extract("name")
         email = try (node.extract("email") as String).validated()
         password = try node.extract("password")
         club_id = try node.extract("club_id")
@@ -42,6 +45,7 @@ final class Specialist: Model, User {
     func makeNode(context: Context) throws -> Node {
         return try Node(node: [
             "id": id,
+            "name": name,
             "email": email.value,
             "password": password,
             "club_id": club_id,
@@ -53,6 +57,7 @@ final class Specialist: Model, User {
     static func prepare(_ database: Database) throws {
         try database.create("specialists") { specialists in
             specialists.id()
+            specialists.string("name")
             specialists.string("email")
             specialists.string("password")
             specialists.parent(Club.self, optional: false)
@@ -65,8 +70,8 @@ final class Specialist: Model, User {
         try database.delete("specialists")
     }
     
-    static func register(email: String, password: String, club_id: String) throws -> Specialist {
-        var newUser = try Specialist(email: email, password: password, club_id: club_id)
+    static func register(name: String, email: String, password: String, club_id: String) throws -> Specialist {
+        var newUser = try Specialist(name: name, email: email, password: password, club_id: club_id)
         if try Specialist.query().filter("email", newUser.email.value).first() == nil {
             // check user email belongs to a given extension
             let userEmail = newUser.email.value
