@@ -55,6 +55,7 @@ final class PlayerController {
         player.weight = new.weight
         player.date_of_birth = new.date_of_birth
         player.dominant_leg = new.dominant_leg
+        player.photo = new.photo
         player.club_id = new.club_id
         try player.save()
         return player

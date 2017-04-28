@@ -15,14 +15,16 @@ final class Player: Model {
     var weight: Float
     var date_of_birth: String
     var dominant_leg: String
+    var photo: String
     var club_id: Node?
     var exists: Bool = false
     
-    init(name: String, weight: Float, dateOfBirth: String, dominantLeg: String, club_id: Node? = nil) {
+    init(name: String, weight: Float, dateOfBirth: String, dominantLeg: String, photo: String, club_id: Node? = nil) {
         self.name = name
         self.weight = weight
         self.date_of_birth = dateOfBirth
         self.dominant_leg = dominantLeg
+        self.photo = photo
         self.club_id = club_id
     }
     
@@ -32,6 +34,7 @@ final class Player: Model {
         weight = try node.extract("weight")
         date_of_birth = try node.extract("date_of_birth")
         dominant_leg = try node.extract("dominant_leg")
+        photo = try node.extract("photo")
         club_id = try node.extract("club_id")
     }
     
@@ -42,6 +45,7 @@ final class Player: Model {
             "weight": weight,
             "date_of_birth": date_of_birth,
             "dominant_leg": dominant_leg,
+            "photo": photo,
             "club_id": club_id
             ])
     }
@@ -53,6 +57,7 @@ final class Player: Model {
             players.string("weight")
             players.string("date_of_birth")
             players.string("dominant_leg")
+            players.string("photo")
             players.parent(Club.self, optional: false)
         }
     }
