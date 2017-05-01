@@ -47,10 +47,11 @@ final class Specialist: Model, User {
             "id": id,
             "name": name,
             "email": email.value,
-            "password": password,
-            "club_id": club_id,
-            "api_key_id": apiKeyID,
-            "api_key_secret": apiKeySecret
+            "club_id": club_id
+//            "password": password,
+//            "club_id": club_id,
+//            "api_key_id": apiKeyID,
+//            "api_key_secret": apiKeySecret
             ])
     }
     

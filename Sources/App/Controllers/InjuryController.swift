@@ -85,6 +85,7 @@ final class InjuryController {
     func treatmentsIndex(request: Request, injury: Injury) throws -> ResponseRepresentable {
         let children = try injury.treatments()
         return try JSON(node: children.makeNode())
+        
     }
 }
 
