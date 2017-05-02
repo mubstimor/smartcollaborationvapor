@@ -78,6 +78,7 @@ final class SmartController{
         for(specialist) in specialists {
 
             var playerName = ""
+            var injuryName = ""
             
             print(specialist.name)
             let treatments = try specialist.treatments()
@@ -88,11 +89,15 @@ final class SmartController{
                 
                 let injuryId = treatment.injury_id!
                 let injury = try Injury.find(injuryId)
+                injuryName = (injury?.name)!
                 print("player from injury \((injury?.player_id)!)")
                 
                 let player = try Player.find((injury?.player_id)!)
 //                print("Player name: \(player?.name)")
                 playerName = (player?.name)!
+                
+                let specialist_id = treatment.specialist_id
+                let specialist = try Specialist.find(specialist_id!)
                 
                 // compare dates
                 let today = Date().getCurrentDate()
@@ -108,7 +113,11 @@ final class SmartController{
                 
                 let object = try Node(node: [
                     "player": playerName,
-                    "treatment": treatment
+//                    "treatment": treatment,
+                    "specialist": specialist?.name,
+                    "injury": injuryName,
+                    "appointment_time": app_time
+                    
                     ])
                 
                 response += object
