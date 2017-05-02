@@ -83,8 +83,21 @@ final class InjuryController {
 //    }
     
     func treatmentsIndex(request: Request, injury: Injury) throws -> ResponseRepresentable {
+        var response: [Node] = []
+        
         let children = try injury.treatments()
-        return try JSON(node: children.makeNode())
+        for treatment in children {
+            let specialist_id = treatment.specialist_id
+            let specialist = try Specialist.find(specialist_id!)
+            
+            let object = try Node(node: [
+                "treatment": treatment,
+                "specialist": specialist?.name
+                ])
+            response += object
+        }
+        
+        return try JSON(node: response.makeNode())
         
     }
 }

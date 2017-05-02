@@ -84,13 +84,13 @@ final class SmartController{
             let treatments = try specialist.treatments()
             
             for treatment in treatments {
-                print("injury id = ")
-                print(treatment.injury_id!)
+//                print("injury id = ")
+//                print(treatment.injury_id!)
                 
                 let injuryId = treatment.injury_id!
                 let injury = try Injury.find(injuryId)
                 injuryName = (injury?.name)!
-                print("player from injury \((injury?.player_id)!)")
+//                print("player from injury \((injury?.player_id)!)")
                 
                 let player = try Player.find((injury?.player_id)!)
 //                print("Player name: \(player?.name)")
@@ -102,8 +102,8 @@ final class SmartController{
                 // compare dates
                 let today = Date().getCurrentDate()
                 let app_time = treatment.next_appointment
-                print("today is \(today)")
-                print("APP TIME is \(app_time)")
+//                print("today is \(today)")
+//                print("APP TIME is \(app_time)")
                 let appointment_time = Date().convertStringToDate(dateString: app_time)
                 let now = Date().convertStringToDate(dateString: today)
                 
