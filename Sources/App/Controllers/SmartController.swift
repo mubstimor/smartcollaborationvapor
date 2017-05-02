@@ -101,7 +101,7 @@ final class SmartController{
                 print("APP TIME is \(app_time)")
                 let appointment_time = Date().convertStringToDate(dateString: app_time)
                 
-                if today > appointment_time {
+                if appointment_time < today {
                     break
                 }
                 
