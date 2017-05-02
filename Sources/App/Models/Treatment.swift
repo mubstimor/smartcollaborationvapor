@@ -54,8 +54,8 @@ final class Treatment: Model {
             "diet_suggestions": diet_suggestions,
             "specialist_suggestions": specialist_suggestions,
             "next_appointment": next_appointment,
-//            "specialist_id": specialist_id,
-            "specialist_id": Specialist.find(specialist_id!)
+            "specialist_id": specialist_id
+//            "specialist_id": Specialist.find(specialist_id!)
             ])
     }
     

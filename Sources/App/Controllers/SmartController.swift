@@ -286,7 +286,7 @@ extension Date {
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
         print("received \(dateString)")
         let newDate = dateFormatter.date(from: dateString)
-        print("date is \(newDate)")
+//        print("date is \(newDate)")
         return newDate!
     }
     
