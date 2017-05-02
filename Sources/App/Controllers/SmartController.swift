@@ -91,18 +91,19 @@ final class SmartController{
                 print("player from injury \((injury?.player_id)!)")
                 
                 let player = try Player.find((injury?.player_id)!)
-                print("Player name: \(player?.name)")
+//                print("Player name: \(player?.name)")
                 playerName = (player?.name)!
                 
                 // compare dates
-                let today = Date()
+                let today = Date().getCurrentDate()
                 let app_time = treatment.next_appointment
                 print("today is \(today)")
                 print("APP TIME is \(app_time)")
                 let appointment_time = Date().convertStringToDate(dateString: app_time)
+                let now = Date().convertStringToDate(dateString: today)
                 
-                if appointment_time < today {
-                    break
+                if appointment_time < now {
+                    continue
                 }
                 
                 let object = try Node(node: [
@@ -274,7 +275,7 @@ extension Date {
         dateFormatter.dateStyle = .long
         dateFormatter.timeStyle = .none
         
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
         
         let date_of_treatment = dateFormatter.string(from: currentDate) // use current time
         
