@@ -11,7 +11,16 @@ import Vapor
 import HTTP
 import TurnstileCrypto
 
-final class SpecialistController: ResourceRepresentable {
+final class SpecialistController {
+    
+    func addRoutes(drop: Droplet){
+        let leagues = drop.grouped("specialists")
+        leagues.get(handler: index)
+        leagues.post(handler: create)
+        leagues.get(Specialist.self, handler: show)
+        leagues.patch(Specialist.self, handler: update)
+        leagues.get(Specialist.self, "treatments", handler: treatmentsIndex)
+    }
     
     func index(request: Request) throws -> ResponseRepresentable {
         return try Specialist.all().makeNode().converted(to: JSON.self)
@@ -53,15 +62,20 @@ final class SpecialistController: ResourceRepresentable {
         return try create(request: request)
     }
     
-    func makeResource() -> Resource<Specialist> {
-        return Resource(
-            index: index,
-            show: show,
-            replace: replace,
-            modify: update,
-            destroy: delete,
-            clear: clear
-        )
+//    func makeResource() -> Resource<Specialist> {
+//        return Resource(
+//            index: index,
+//            show: show,
+//            replace: replace,
+//            modify: update,
+//            destroy: delete,
+//            clear: clear
+//        )
+//    }
+    
+    func treatmentsIndex(request: Request, specialist: Specialist) throws -> ResponseRepresentable {
+        let children = try specialist.treatments()
+        return try JSON(node: children.makeNode())
     }
 }
 

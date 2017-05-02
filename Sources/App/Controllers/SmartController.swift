@@ -24,6 +24,7 @@ final class SmartController{
         drop.post("club_subscription", handler: create_club_subscription)
         drop.post("paymentupdates", handler: processPayments)
         drop.post("updatepackage", handler: updatePackage)
+        drop.post("club_appointments", handler: clubSpecialistAppointments)
     }
 
     func dbversion(request: Request) throws -> ResponseRepresentable{
@@ -56,6 +57,70 @@ final class SmartController{
                         .union(Player.self)
                         .filter(Player.self, "club_id", .in, [club_id]).all()
         return try JSON(injuries.makeNode())
+    }
+    
+    func clubSpecialistAppointments(request: Request) throws -> ResponseRepresentable{
+        
+        guard let club_id = request.data["club_id"]?.string else{
+            throw Abort.badRequest
+        }
+        
+        guard let club = try Club.find(club_id) else{
+            throw Abort.custom(status: .badRequest, message: "Unable to find specialists")
+        }
+        
+        let specialists = try club.specialists()
+        
+        // loop through specialists and add each one's treatments to response
+        var specialist_treatments:[Treatment] = []
+        var response: [Node] = []
+        
+        for(specialist) in specialists {
+
+            var playerName = ""
+            
+            print(specialist.name)
+            let treatments = try specialist.treatments()
+            
+            for treatment in treatments {
+                print("injury id = ")
+                print(treatment.injury_id!)
+                
+                let injuryId = treatment.injury_id!
+                let injury = try Injury.find(injuryId)
+                print("player from injury \((injury?.player_id)!)")
+                
+                let player = try Player.find((injury?.player_id)!)
+                print("Player name: \(player?.name)")
+                playerName = (player?.name)!
+                
+                // compare dates
+                let today = Date()
+                let app_time = treatment.next_appointment
+                print("today is \(today)")
+                print("APP TIME is \(app_time)")
+                let appointment_time = Date().convertStringToDate(dateString: app_time)
+                
+                if today > appointment_time {
+                    break
+                }
+                
+                let object = try Node(node: [
+                    "player": playerName,
+                    "treatment": treatment
+                    ])
+                
+                response += object
+            }
+            
+            specialist_treatments += treatments
+        }
+        
+//        let injuries = try Injury.query()
+//            .union(Player.self)
+//            .filter(Player.self, "club_id", .in, [club_id]).all()
+        
+        return try JSON(response.makeNode())
     }
     
     // assign user to default subscription package
@@ -193,5 +258,36 @@ final class SmartController{
     }
     
     
+}
 
+extension Date {
+    
+    /*
+     * Based on http://stackoverflow.com/questions/36861732/swift-convert-string-to-date
+     */
+    
+    func getCurrentDate() -> String{
+        // get current date
+        let currentDate = Date()
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .long
+        dateFormatter.timeStyle = .none
+        
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        
+        let date_of_treatment = dateFormatter.string(from: currentDate) // use current time
+        
+        return date_of_treatment
+    }
+    
+    func convertStringToDate(dateString: String) -> Date {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
+        print("received \(dateString)")
+        let newDate = dateFormatter.date(from: dateString)
+        print("date is \(newDate)")
+        return newDate!
+    }
+    
 }

@@ -102,6 +102,9 @@ final class Specialist: Model, User {
 
 extension Specialist{
     // to be filled with specialist roles
+    func treatments() throws -> [Treatment] {
+        return try children(nil, Treatment.self).all()
+    }
 }
 
 extension Specialist: Authenticator {
