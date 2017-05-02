@@ -78,8 +78,25 @@ final class TreatmentController{
 //    }
     
     func commentsIndex(request: Request, treatment: Treatment) throws -> ResponseRepresentable {
+        var response:[Node] = []
         let children = try treatment.comments()
-        return try JSON(node: children.makeNode())
+        
+        for comment in children {
+            let specialist_id = comment.specialist_id
+            let specialist = try Specialist.find(specialist_id!)
+            
+            let object = try Node(node: [
+                "comment": comment.comment,
+                "specialist_id": specialist?.name,
+                "date_added": comment.date_added,
+                "treatment_id": comment.treatment_id,
+                "id": comment.id
+                ])
+            response += object
+        }
+
+        
+        return try JSON(node: response.makeNode())
     }
     
 }
