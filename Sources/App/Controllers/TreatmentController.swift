@@ -28,6 +28,15 @@ final class TreatmentController{
     func create(request: Request) throws -> ResponseRepresentable {
         var treatment = try request.treatment()
         try treatment.save()
+        
+        // update injury status if injury is marked as recovered
+        if treatment.status_from_assessment == "Recovered" {
+            let injury_id = treatment.injury_id
+            var injury = try Injury.query().filter("id", injury_id!).first()
+            injury?.recovery_date = treatment.date_of_treatment
+            try injury?.save()
+        }
+        
         return treatment
     }
     
