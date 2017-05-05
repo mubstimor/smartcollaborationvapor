@@ -77,19 +77,19 @@ final class SmartController{
         
         let groupedData = sortedInjuryList.group(by: { $0.time_of_injury.substring(to: ($0.time_of_injury.index(($0.time_of_injury.startIndex), offsetBy: 7))) })
         
+        var response:[Node] = []
         var result: [String: Int] = [:]
         
         for set in groupedData {
-            
-//            var injuryStringArray:[String] = []
-//            
-//            // update injury data
-//            for injury in set.value {
-//                injuryStringArray.append(injury.name)
-//            }
-//            
+
             result[set.key] = set.value.count
-//            print("key for \(set.value)")
+
+            let object = try Node(node: [
+                "period": set.key,
+                "total": set.value.count
+                ])
+            
+            response += object
             
         }
         
@@ -105,7 +105,7 @@ final class SmartController{
 
         print("response data \(result)")
 //        return try JSON(node: ["response": "\(result)" ])
-        return try JSON(result.makeNode())
+        return try JSON(response.makeNode())
         
     }
     
