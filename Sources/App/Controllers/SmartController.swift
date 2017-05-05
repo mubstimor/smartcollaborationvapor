@@ -19,6 +19,7 @@ final class SmartController{
         drop.get("dbversion", handler: dbversion)
         drop.post("name", handler: postName)
         drop.post("clubinjuries", handler: clubInjuries)
+        drop.post("clubinjury_trends", handler: clubInjuryTrends)
         drop.get("appointments", handler: appointments)
         drop.get("fixtures_today", handler: get_todays_fixtures)
         drop.post("club_subscription", handler: create_club_subscription)
@@ -58,6 +59,56 @@ final class SmartController{
                         .filter(Player.self, "club_id", .in, [club_id]).all()
         return try JSON(injuries.makeNode())
     }
+    
+    func clubInjuryTrends(request: Request) throws -> ResponseRepresentable{
+        
+        guard let club_id = request.data["club_id"]?.string else{
+            throw Abort.badRequest
+        }
+        
+        let injuries = try Injury.query()
+            .union(Player.self)
+            .filter(Player.self, "club_id", .in, [club_id]).all()
+        
+        let sortedInjuryList = injuries.sorted(by: { Date().convertStringToDate(dateString: $0.time_of_injury) > Date().convertStringToDate(dateString: $1.time_of_injury) })
+
+//        let index = str.index(str.startIndex, offsetBy: 5)
+//        str.substring(to: index)
+        
+        let groupedData = sortedInjuryList.group(by: { $0.time_of_injury.substring(to: ($0.time_of_injury.index(($0.time_of_injury.startIndex), offsetBy: 7))) })
+        
+        var result: [String: Int] = [:]
+        
+        for set in groupedData {
+            
+            var injuryStringArray:[String] = []
+            
+            // update injury data
+            for injury in set.value {
+                injuryStringArray.append(injury.name)
+            }
+            
+            result[set.key] = injuryStringArray.count
+//            print("key for \(set.value)")
+            
+        }
+        
+//        for injury in injuries {
+//            
+//            let injury_date = Date().convertStringToDate(dateString: injury.time_of_injury)
+//            let calendar = Calendar.autoupdatingCurrent
+//            let components = calendar.dateComponents([.hour, .minute], from: injury_date)
+//            let year = components.year
+//            let month = components.month
+//            
+//        }
+
+        print("response data \(result)")
+//        return try JSON(node: ["response": "\(result)" ])
+        return try JSON(result.makeNode())
+        
+    }
+    
     
     func clubSpecialistAppointments(request: Request) throws -> ResponseRepresentable{
         
@@ -300,4 +351,21 @@ extension Date {
         return newDate!
     }
     
+}
+
+/*
+ * categorise data based on 
+ * http://stackoverflow.com/questions/31220002/how-to-group-by-the-elements-of-an-array-in-swift
+ */
+public extension Sequence {
+    func group<U: Hashable>(by key: (Iterator.Element) -> U) -> [U:[Iterator.Element]] {
+        var categories: [U: [Iterator.Element]] = [:]
+        for element in self {
+            let key = key(element)
+            if case nil = categories[key]?.append(element) {
+                categories[key] = [element]
+            }
+        }
+        return categories
+    }
 }

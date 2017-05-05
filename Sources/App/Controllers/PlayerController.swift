@@ -84,18 +84,7 @@ final class PlayerController {
             "concerns" : concerns.makeNode()
             ])
     }
-    
-//    func makeResource() -> Resource<Player> {
-//        return Resource(
-//            index: index,
-//            store: create,
-//            show: show,
-//            replace: replace,
-//            modify: update,
-//            destroy: delete,
-//            clear: clear
-//        )
-//    }
+
 }
 
 extension Request {
