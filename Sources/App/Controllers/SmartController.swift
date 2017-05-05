@@ -70,7 +70,7 @@ final class SmartController{
             .union(Player.self)
             .filter(Player.self, "club_id", .in, [club_id]).all()
         
-        let sortedInjuryList = injuries.sorted(by: { Date().convertStringToDate(dateString: $0.time_of_injury) > Date().convertStringToDate(dateString: $1.time_of_injury) })
+        let sortedInjuryList = injuries.sorted(by: { Date().convertFullStringToDate(dateString: $0.time_of_injury) < Date().convertFullStringToDate(dateString: $1.time_of_injury) })
 
 //        let index = str.index(str.startIndex, offsetBy: 5)
 //        str.substring(to: index)
@@ -81,14 +81,14 @@ final class SmartController{
         
         for set in groupedData {
             
-            var injuryStringArray:[String] = []
-            
-            // update injury data
-            for injury in set.value {
-                injuryStringArray.append(injury.name)
-            }
-            
-            result[set.key] = injuryStringArray.count
+//            var injuryStringArray:[String] = []
+//            
+//            // update injury data
+//            for injury in set.value {
+//                injuryStringArray.append(injury.name)
+//            }
+//            
+            result[set.key] = set.value.count
 //            print("key for \(set.value)")
             
         }
@@ -348,6 +348,15 @@ extension Date {
         print("received \(dateString)")
         let newDate = dateFormatter.date(from: dateString)
 //        print("date is \(newDate)")
+        return newDate!
+    }
+    
+    func convertFullStringToDate(dateString: String) -> Date {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        print("received \(dateString)")
+        let newDate = dateFormatter.date(from: dateString)
+        //        print("date is \(newDate)")
         return newDate!
     }
     
