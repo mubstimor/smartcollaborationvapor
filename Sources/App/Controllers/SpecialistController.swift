@@ -14,12 +14,13 @@ import TurnstileCrypto
 final class SpecialistController {
     
     func addRoutes(drop: Droplet){
-        let leagues = drop.grouped("specialists")
-        leagues.get(handler: index)
-        leagues.post(handler: create)
-        leagues.get(Specialist.self, handler: show)
-        leagues.patch(Specialist.self, handler: update)
-        leagues.get(Specialist.self, "treatments", handler: treatmentsIndex)
+//        let specialists = drop.grouped("specialists")
+        let specialists = drop.grouped(BasicAuthMiddleware(), StaticInfo.protect).grouped("specialists")
+        specialists.get(handler: index)
+        specialists.post(handler: create)
+        specialists.get(Specialist.self, handler: show)
+        specialists.patch(Specialist.self, handler: update)
+        specialists.get(Specialist.self, "treatments", handler: treatmentsIndex)
     }
     
     func index(request: Request) throws -> ResponseRepresentable {

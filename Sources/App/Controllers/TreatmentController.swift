@@ -13,7 +13,8 @@ import HTTP
 final class TreatmentController{
     
     func addRoutes(drop: Droplet){
-        let treatments = drop.grouped("treatments")
+//        let treatments = drop.grouped("treatments")
+        let treatments = drop.grouped(BasicAuthMiddleware(), StaticInfo.protect).grouped("treatments")
         treatments.get(handler: index)
         treatments.post(handler: create)
         treatments.get(Treatment.self, handler: show)

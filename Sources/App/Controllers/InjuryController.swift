@@ -13,7 +13,8 @@ import HTTP
 final class InjuryController {
     
     func addRoutes(drop: Droplet){
-        let injuries = drop.grouped("injuries")
+//        let injuries = drop.grouped("injuries")
+        let injuries = drop.grouped(BasicAuthMiddleware(), StaticInfo.protect).grouped("injuries")
         injuries.get(handler: index)
         injuries.post(handler: create)
         injuries.get(Injury.self, handler: show)
