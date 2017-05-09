@@ -79,8 +79,10 @@ echo json_encode($response);
 */
 function changeClientPackage($package, $date_paid, $next_payment, $stripe_customer_id, $status, $club_id ){
 // Your ID and token
-$blogID = '8070105920543249955';
-$authToken = 'xzcdsfrfawskfesd';
+// $blogID = '8070105920543249955';
+// $authToken = 'xzcdsfrfawskfesd';
+$auth_key = getenv('SV_KEY');
+$authToken = 'Basic '.$auth_key;
 
 // The data to send to the API
 $postData = array(
@@ -105,7 +107,7 @@ $context = stream_context_create(array(
 ));
 
 // Send the request
-$response = file_get_contents('http://smartcollaborationvapor.herokuapp.com/updatepackage', FALSE, $context);
+$response = file_get_contents('https://smartcollaborationvapor.herokuapp.com/updatepackage', FALSE, $context);
 
 // Check for errors
 if($response === FALSE){

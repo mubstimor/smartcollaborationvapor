@@ -1,7 +1,15 @@
 import Vapor
 import HTTP
 
-final class TransferController: ResourceRepresentable {
+final class TransferController {
+    
+    func addRoutes(drop: Droplet){
+        let transfer = drop.grouped(BasicAuthMiddleware(), StaticInfo.protect).grouped("transfers")
+        transfer.get(handler: index)
+        transfer.post(handler: create)
+        transfer.get(Transfer.self, handler: show)
+        transfer.patch(Transfer.self, handler: update)
+    }
     
     func index(request: Request) throws -> ResponseRepresentable {
         return try Transfer.all().makeNode().converted(to: JSON.self)
@@ -50,17 +58,17 @@ final class TransferController: ResourceRepresentable {
         return try create(request: request)
     }
     
-    func makeResource() -> Resource<Transfer> {
-        return Resource(
-            index: index,
-            store: create,
-            show: show,
-            replace: replace,
-            modify: update,
-            destroy: delete,
-            clear: clear
-        )
-    }
+//    func makeResource() -> Resource<Transfer> {
+//        return Resource(
+//            index: index,
+//            store: create,
+//            show: show,
+//            replace: replace,
+//            modify: update,
+//            destroy: delete,
+//            clear: clear
+//        )
+//    }
 }
 
 extension Request {

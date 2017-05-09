@@ -98,8 +98,7 @@ extension Specialist: ResponseRepresentable {
                 "email": email.value,
                 "club_id": club_id,
                 "api_key_id": apiKeyID,
-                "api_key_secret": apiKeySecret,
-                "api_key_log": newKey
+                "api_key_secret": apiKeySecret
                 
             ]
         )

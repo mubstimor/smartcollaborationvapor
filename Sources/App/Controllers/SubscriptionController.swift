@@ -10,7 +10,15 @@
 import Vapor
 import HTTP
 
-final class SubscriptionController: ResourceRepresentable {
+final class SubscriptionController {
+    
+    func addRoutes(drop: Droplet){
+        let subscription = drop.grouped(BasicAuthMiddleware(), StaticInfo.protect).grouped("subscriptions")
+        subscription.get(handler: index)
+        subscription.post(handler: create)
+        subscription.get(Subscription.self, handler: show)
+        subscription.patch(Subscription.self, handler: update)
+    }
     
     func index(request: Request) throws -> ResponseRepresentable {
         return try Subscription.all().makeNode().converted(to: JSON.self)
@@ -55,17 +63,17 @@ final class SubscriptionController: ResourceRepresentable {
         return try create(request: request)
     }
     
-    func makeResource() -> Resource<Subscription> {
-        return Resource(
-            index: index,
-            store: create,
-            show: show,
-            replace: replace,
-            modify: update,
-            destroy: delete,
-            clear: clear
-        )
-    }
+//    func makeResource() -> Resource<Subscription> {
+//        return Resource(
+//            index: index,
+//            store: create,
+//            show: show,
+//            replace: replace,
+//            modify: update,
+//            destroy: delete,
+//            clear: clear
+//        )
+//    }
 }
 
 extension Request {

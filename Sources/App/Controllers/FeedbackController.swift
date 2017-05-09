@@ -10,7 +10,15 @@
 import Vapor
 import HTTP
 
-final class FeedbackController: ResourceRepresentable {
+final class FeedbackController {
+    
+    func addRoutes(drop: Droplet){
+        let feedback = drop.grouped(BasicAuthMiddleware(), StaticInfo.protect).grouped("feedbacks")
+        feedback.get(handler: index)
+        feedback.post(handler: create)
+        feedback.get(Feedback.self, handler: show)
+        feedback.patch(Feedback.self, handler: update)
+    }
     
     func index(request: Request) throws -> ResponseRepresentable {
         return try Feedback.all().makeNode().converted(to: JSON.self)
@@ -52,17 +60,17 @@ final class FeedbackController: ResourceRepresentable {
         return try create(request: request)
     }
     
-    func makeResource() -> Resource<Feedback> {
-        return Resource(
-            index: index,
-            store: create,
-            show: show,
-            replace: replace,
-            modify: update,
-            destroy: delete,
-            clear: clear
-        )
-    }
+//    func makeResource() -> Resource<Feedback> {
+//        return Resource(
+//            index: index,
+//            store: create,
+//            show: show,
+//            replace: replace,
+//            modify: update,
+//            destroy: delete,
+//            clear: clear
+//        )
+//    }
 }
 
 extension Request {

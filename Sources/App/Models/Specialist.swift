@@ -140,7 +140,7 @@ extension Specialist: Authenticator {
                 .filter("api_key_secret", credentials.secret)
                 .first()
             print("id was \(credentials.id) and secret \(credentials.secret)")
-            print("found \(user?.email)")
+//            print("found \(user?.email)")
             
             
         default:

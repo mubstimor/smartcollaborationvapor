@@ -77,6 +77,15 @@ player.addRoutes(drop: drop)
 let concern = KeyConcernController()
 concern.addRoutes(drop: drop)
 
+let feedback = FeedbackController()
+feedback.addRoutes(drop: drop)
+
+let subscription = SubscriptionController()
+subscription.addRoutes(drop: drop)
+
+let transfer = TransferController()
+transfer.addRoutes(drop: drop)
+
 let protect = ProtectMiddleware(error:
     Abort.custom(status: .forbidden, message: "Not authorized.!")
 )
@@ -94,10 +103,10 @@ drop.resource("countries", CountryController())
 //drop.resource("players", PlayerController())
 //drop.resource("injuries", InjuryController())
 //drop.resource("treatments", TreatmentController())
-drop.resource("feedbacks", FeedbackController())
-drop.resource("subscriptions", SubscriptionController())
+//drop.resource("feedbacks", FeedbackController())
+//drop.resource("subscriptions", SubscriptionController())
 //drop.resource("specialists", SpecialistController())
 drop.resource("fixtures", FixtureController())
-drop.resource("transfers", TransferController())
+//drop.resource("transfers", TransferController())
 
 drop.run()
