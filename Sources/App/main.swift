@@ -34,13 +34,13 @@ let auth = AuthMiddleware(user: Specialist.self) { value in
     return Cookie(
         name: "vapor-auth",
         value: value,
-        expires: Date().addingTimeInterval(60 * 60 * 24 * 365), // 24 hours * 365
+        expires: Date().addingTimeInterval(60 * 60 * 24 ), // 24 hours removed * 365 
         secure: true,
         httpOnly: true
     )
 }
 
-//drop.middleware.append(auth)
+drop.middleware.append(auth)
 
 //drop.addConfigurable(middleware: AuthMiddleware(user: Specialist.self), name: "auth")
 //drop.addConfigurable(middleware: BasicAuthMiddleware, name: "basic")
