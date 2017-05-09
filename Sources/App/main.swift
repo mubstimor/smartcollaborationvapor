@@ -34,7 +34,7 @@ let auth = AuthMiddleware(user: Specialist.self) { value in
     return Cookie(
         name: "vapor-auth",
         value: value,
-        expires: Date().addingTimeInterval(60 * 60 * 24 ), // 24 hours removed * 365 
+        expires: Date().addingTimeInterval(60 * 60 * 24 * 365), // 24 hours x 365 days
         secure: true,
         httpOnly: true
     )

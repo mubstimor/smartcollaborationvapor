@@ -142,6 +142,7 @@ extension Specialist: Authenticator {
             print("id was \(credentials.id) and secret \(credentials.secret)")
             print("found \(user?.email)")
             
+            
         default:
             throw UnsupportedCredentialsError()
         }

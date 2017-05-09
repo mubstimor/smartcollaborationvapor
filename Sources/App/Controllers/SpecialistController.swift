@@ -89,6 +89,9 @@ extension Request {
 
 extension Specialist: ResponseRepresentable {
     func makeResponse() throws -> Response {
+        
+        let newKey = APIKey(id: "da", secret: "DAK")
+        
         let json = try JSON(node:
             [
                 "id": id,
@@ -96,7 +99,8 @@ extension Specialist: ResponseRepresentable {
                 "email": email.value,
                 "club_id": club_id,
                 "api_key_id": apiKeyID,
-                "api_key_secret": apiKeySecret
+                "api_key_secret": apiKeySecret,
+                "api_key_log": newKey
                 
             ]
         )
