@@ -40,7 +40,8 @@ let auth = AuthMiddleware(user: Specialist.self) { value in
     )
 }
 
-drop.middleware.append(auth)
+//drop.middleware.append(auth)
+
 //drop.addConfigurable(middleware: AuthMiddleware(user: Specialist.self), name: "auth")
 //drop.addConfigurable(middleware: BasicAuthMiddleware, name: "basic")
 drop.middleware.append(BasicAuthMiddleware())
