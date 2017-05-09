@@ -90,7 +90,6 @@ extension Request {
 extension Specialist: ResponseRepresentable {
     func makeResponse() throws -> Response {
         
-        let newKey = APIKey(id: "da", secret: "DAK")
         
         let json = try JSON(node:
             [
