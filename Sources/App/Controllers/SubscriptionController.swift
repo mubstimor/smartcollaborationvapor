@@ -13,7 +13,7 @@ import HTTP
 final class SubscriptionController {
     
     func addRoutes(drop: Droplet){
-        let subscription = drop.grouped(BasicAuthMiddleware(), StaticInfo.protect).grouped("subscriptions")
+        let subscription = drop.grouped(BasicAuthMiddleware(), StaticInfo.protect).grouped("api").grouped("subscriptions")
         subscription.get(handler: index)
         subscription.post(handler: create)
         subscription.get(Subscription.self, handler: show)

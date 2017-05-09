@@ -13,7 +13,7 @@ final class PlayerController {
     
     func addRoutes(drop: Droplet){
 //        let players = drop.grouped("players")
-        let players = drop.grouped(BasicAuthMiddleware(), StaticInfo.protect).grouped("players")
+        let players = drop.grouped(BasicAuthMiddleware(), StaticInfo.protect).grouped("api").grouped("players")
         players.get(handler: index)
         players.post(handler: create)
         players.get(Player.self, handler: show)

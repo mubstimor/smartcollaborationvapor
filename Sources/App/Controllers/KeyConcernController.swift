@@ -13,7 +13,7 @@ final class KeyConcernController {
     
     func addRoutes(drop: Droplet){
 //        let keyconcerns = drop.grouped("keyconcerns")
-        let keyconcerns = drop.grouped(BasicAuthMiddleware(), StaticInfo.protect).grouped("keyconcerns")
+        let keyconcerns = drop.grouped(BasicAuthMiddleware(), StaticInfo.protect).grouped("api").grouped("keyconcerns")
         keyconcerns.get(handler: index)
         keyconcerns.post(handler: create)
         keyconcerns.get(KeyConcern.self, handler: show)

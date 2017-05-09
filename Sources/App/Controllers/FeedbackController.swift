@@ -13,7 +13,7 @@ import HTTP
 final class FeedbackController {
     
     func addRoutes(drop: Droplet){
-        let feedback = drop.grouped(BasicAuthMiddleware(), StaticInfo.protect).grouped("feedbacks")
+        let feedback = drop.grouped(BasicAuthMiddleware(), StaticInfo.protect).grouped("api").grouped("feedbacks")
         feedback.get(handler: index)
         feedback.post(handler: create)
         feedback.get(Feedback.self, handler: show)

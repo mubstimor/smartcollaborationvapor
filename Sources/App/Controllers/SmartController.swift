@@ -15,17 +15,18 @@ final class SmartController{
     
     func addRoutes(drop: Droplet){
     
-        drop.get(handler: index)
-        drop.get("dbversion", handler: dbversion)
-        drop.post("name", handler: postName)
-        drop.post("clubinjuries", handler: clubInjuries)
-        drop.post("clubinjury_trends", handler: clubInjuryTrends)
-        drop.get("appointments", handler: appointments)
-        drop.get("fixtures_today", handler: get_todays_fixtures)
-        drop.post("club_subscription", handler: create_club_subscription)
-        drop.post("paymentupdates", handler: processPayments)
-        drop.post("updatepackage", handler: updatePackage)
-        drop.post("club_appointments", handler: clubSpecialistAppointments)
+        let api_home = drop.grouped(BasicAuthMiddleware(), StaticInfo.protect).grouped("api")
+        api_home.get(handler: index)
+        api_home.get("dbversion", handler: dbversion)
+        api_home.post("name", handler: postName)
+        api_home.post("clubinjuries", handler: clubInjuries)
+        api_home.post("clubinjury_trends", handler: clubInjuryTrends)
+        api_home.get("appointments", handler: appointments)
+        api_home.get("fixtures_today", handler: get_todays_fixtures)
+        api_home.post("club_subscription", handler: create_club_subscription)
+        api_home.post("paymentupdates", handler: processPayments)
+        api_home.post("updatepackage", handler: updatePackage)
+        api_home.post("club_appointments", handler: clubSpecialistAppointments)
     }
 
     func dbversion(request: Request) throws -> ResponseRepresentable{

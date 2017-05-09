@@ -15,7 +15,7 @@ final class SpecialistController {
     
     func addRoutes(drop: Droplet){
 //        let specialists = drop.grouped("specialists")
-        let specialists = drop.grouped(BasicAuthMiddleware(), StaticInfo.protect).grouped("specialists")
+        let specialists = drop.grouped(BasicAuthMiddleware(), StaticInfo.protect).grouped("api").grouped("specialists")
         specialists.get(handler: index)
         specialists.post(handler: create)
         specialists.get(Specialist.self, handler: show)

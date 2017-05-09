@@ -4,7 +4,7 @@ import HTTP
 final class TransferController {
     
     func addRoutes(drop: Droplet){
-        let transfer = drop.grouped(BasicAuthMiddleware(), StaticInfo.protect).grouped("transfers")
+        let transfer = drop.grouped(BasicAuthMiddleware(), StaticInfo.protect).grouped("api").grouped("transfers")
         transfer.get(handler: index)
         transfer.post(handler: create)
         transfer.get(Transfer.self, handler: show)

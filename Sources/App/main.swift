@@ -96,6 +96,15 @@ drop.grouped(BasicAuthMiddleware(), protect).group("api") { api in
     }
 }
 
+drop.get{ request in
+    return try JSON(node: [
+        "message": "Hello, welcome!"
+        ])
+}
+
+drop.get("clubs_list"){ request in
+    return try JSON(node: Club.all().makeNode())
+}
 
 drop.resource("countries", CountryController())
 //drop.resource("leagues", LeagueController())
