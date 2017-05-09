@@ -8,6 +8,12 @@ import HTTP
 
 let drop = Droplet()
 
+do {
+    drop.middleware.insert(try CORSMiddleware(configuration: drop.config), at: 0)
+} catch {
+    fatalError("Error creating CORSMiddleware, please check that you've setup cors.json correctly.")
+}
+
 let memory = MemorySessions()
 let sessions = SessionsMiddleware(sessions: memory)
 

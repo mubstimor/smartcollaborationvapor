@@ -1,0 +1,5 @@
+{
+    "allowedOrigin": "https://smartcollaborationstripe.herokuapp.com",
+    "allowedMethods": "GET,POST,PUT",
+    "allowedHeaders": ["Accept", "Authorization", "Content-Type", "Origin", "X-Requested-With"]
+}
