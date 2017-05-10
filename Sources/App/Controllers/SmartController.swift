@@ -61,10 +61,12 @@ final class SmartController{
         let specialist_club = club?.name
         let subscription = try Subscription.query().filter("club_id", (specialist?.club_id)!).first()
         let club_package = subscription?.package
+        let payment_id = subscription?.payment_id
       
         let response = try Node(node: [
             "club": specialist_club,
             "package": club_package,
+            "payment_id": payment_id,
             "specialist": specialist
             ])
         
