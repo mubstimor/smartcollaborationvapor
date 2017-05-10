@@ -27,6 +27,7 @@ final class SmartController{
         api_home.post("paymentupdates", handler: processPayments)
         api_home.post("updatepackage", handler: updatePackage)
         api_home.post("club_appointments", handler: clubSpecialistAppointments)
+        api_home.post("specialist_details", handler: specialistDetails)
     }
 
     func dbversion(request: Request) throws -> ResponseRepresentable{
@@ -47,6 +48,49 @@ final class SmartController{
         return try JSON(node:[
             "message":"Hello \(name)"
             ])
+    }
+    
+    func specialistDetails(request: Request) throws -> ResponseRepresentable{
+        
+        guard let specialist_id = request.data["specialist_id"]?.string else{
+            throw Abort.badRequest
+        }
+        
+        let specialist = try Specialist.query().filter("id", specialist_id).first()
+        let club = try Club.query().filter("id", (specialist?.club_id)!).first()
+        let specialist_club = club?.name
+        let subscription = try Subscription.query().filter("club_id", (specialist?.club_id)!).first()
+        let club_package = subscription?.package
+        
+        let specialist_name = (specialist?.name)!
+        let spec_email = "\(specialist?.email)"
+
+//        let object = try Node(node: [
+//            "player": (specialist?.name)!,
+//            "specialist": (specialist?.email)!,
+//            "injury": specialist_club!,
+//            "appointment_time": club_package!
+//            ])
+//        
+        let response = try Node(node: [
+            "name": specialist_name,
+            "email": spec_email,
+            "club": specialist_club,
+            "package": club_package
+            ])
+        
+//        return try JSON(node: [
+//            "name": specialist?.name,
+//            "email": specialist?.email,
+//            "club": specialist_club,
+//            "package": club_package
+//            ])
+        
+//        return try JSON(node: [
+//            "message": "Hello, welcome!"
+//            ])
+        
+            return try JSON(response.makeNode())
     }
     
     func clubInjuries(request: Request) throws -> ResponseRepresentable{
@@ -93,16 +137,6 @@ final class SmartController{
             response += object
             
         }
-        
-//        for injury in injuries {
-//            
-//            let injury_date = Date().convertStringToDate(dateString: injury.time_of_injury)
-//            let calendar = Calendar.autoupdatingCurrent
-//            let components = calendar.dateComponents([.hour, .minute], from: injury_date)
-//            let year = components.year
-//            let month = components.month
-//            
-//        }
 
         print("response data \(result)")
 //        return try JSON(node: ["response": "\(result)" ])
