@@ -110,6 +110,32 @@ drop.get("clubs_list"){ request in
     return try JSON(node: Club.all().makeNode())
 }
 
+drop.post("register_club"){ request in
+    
+    guard let name = request.data["name"]?.string else{
+        throw Abort.badRequest
+    }
+    
+    guard let established = request.data["established"]?.string else{
+        throw Abort.badRequest
+    }
+    
+    guard let email_extension = request.data["email_extension"]?.string else{
+        throw Abort.badRequest
+    }
+    
+    guard let league_id = request.data["league_id"]?.string else{
+        throw Abort.badRequest
+    }
+    
+    var club = Club(name: name, established: established, email_extension: email_extension, league_id: Node.string(league_id) )
+
+    try club.save()
+    
+    return try JSON(node: club.makeNode())
+
+}
+
 drop.resource("countries", CountryController())
 //drop.resource("leagues", LeagueController())
 //drop.resource("clubs", ClubController())
