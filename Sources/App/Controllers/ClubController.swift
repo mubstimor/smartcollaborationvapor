@@ -8,18 +8,13 @@
 
 import Vapor
 import HTTP
-import Auth
 
 final class ClubController {
-    
-    let protect = ProtectMiddleware(error:
-        Abort.custom(status: .forbidden, message: "Not authorized.!")
-    )
     
     func addRoutes(drop: Droplet){
 //        let clubs = drop.grouped("clubs")
 //        let clubs = drop.grouped("api").grouped("clubs")
-        let clubs = drop.grouped(BasicAuthMiddleware(), protect).grouped("api").grouped("clubs")
+        let clubs = drop.grouped(BasicAuthMiddleware(), StaticInfo.protect).grouped("api").grouped("clubs")
         clubs.get(handler: index)
         clubs.post(handler: create)
         clubs.get(Club.self, handler: show)

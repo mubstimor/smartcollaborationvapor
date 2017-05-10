@@ -9,6 +9,7 @@
 
 import Vapor
 import HTTP
+import Foundation
 
 final class TreatmentController{
     
@@ -36,6 +37,20 @@ final class TreatmentController{
             var injury = try Injury.query().filter("id", injury_id!).first()
             injury?.recovery_date = treatment.date_of_treatment
             try injury?.save()
+            
+            // update recovery tracker too
+            let calendar = NSCalendar.current
+            
+            // Replace the hour (time) of both dates with 00:00
+            let date1 = calendar.startOfDay(for: Date().convertFullStringToDate(dateString: treatment.date_of_treatment))
+            let date2 = calendar.startOfDay(for: Date().convertFullStringToDate(dateString: (injury?.time_of_injury)!))
+            
+            let components = calendar.dateComponents([.day], from: date1, to: date2)
+            let numberOfDays = components.day
+            
+            var recovery = RecoveryTracker(injury_id: treatment.injury_id, rehab_time: "\(numberOfDays)", date_recorded: Date().getCurrentDate(), specialist_id: treatment.specialist_id)
+            try recovery.save()
+            
         }
         
         return treatment

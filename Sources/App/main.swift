@@ -29,6 +29,7 @@ drop.preparations.append(Feedback.self)
 drop.preparations.append(Fixture.self)
 drop.preparations.append(Transfer.self)
 drop.preparations.append(KeyConcern.self)
+drop.preparations.append(RecoveryTracker.self)
 
 let auth = AuthMiddleware(user: Specialist.self) { value in
     return Cookie(
@@ -86,15 +87,18 @@ subscription.addRoutes(drop: drop)
 let transfer = TransferController()
 transfer.addRoutes(drop: drop)
 
-let protect = ProtectMiddleware(error:
-    Abort.custom(status: .forbidden, message: "Not authorized.!")
-)
+let recovery = RecoveryTrackerController()
+recovery.addRoutes(drop: drop)
 
-drop.grouped(BasicAuthMiddleware(), protect).group("api") { api in
-    api.get("me") { request in
-        return try JSON(node: request.user().makeNode())
-    }
-}
+//let protect = ProtectMiddleware(error:
+//    Abort.custom(status: .forbidden, message: "Not authorized.!")
+//)
+//
+//drop.grouped(BasicAuthMiddleware(), protect).group("api") { api in
+//    api.get("me") { request in
+//        return try JSON(node: request.user().makeNode())
+//    }
+//}
 
 drop.get{ request in
     return try JSON(node: [

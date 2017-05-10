@@ -107,7 +107,7 @@ $context = stream_context_create(array(
 ));
 
 // Send the request
-$response = file_get_contents('https://smartcollaborationvapor.herokuapp.com/updatepackage', FALSE, $context);
+$response = file_get_contents('https://smartcollaborationvapor.herokuapp.com/api/updatepackage', FALSE, $context);
 
 // Check for errors
 if($response === FALSE){

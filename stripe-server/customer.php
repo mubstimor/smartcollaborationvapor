@@ -108,7 +108,7 @@ $context = stream_context_create(array(
 ));
 
 // Send the request
-$response = file_get_contents('https://smartcollaborationvapor.herokuapp.com/subscriptions', FALSE, $context);
+$response = file_get_contents('https://smartcollaborationvapor.herokuapp.com/api/subscriptions', FALSE, $context);
 
 // Check for errors
 if($response === FALSE){
