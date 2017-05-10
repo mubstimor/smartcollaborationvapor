@@ -52,7 +52,6 @@ final class InjuryController {
         injury.name = new.name
         injury.player_id = new.player_id
         injury.situation = new.situation
-        injury.date_of_injury = new.date_of_injury
         injury.time_of_injury = new.time_of_injury
         injury.injured_body_part = new.injured_body_part
         injury.is_contact_injury = new.is_contact_injury

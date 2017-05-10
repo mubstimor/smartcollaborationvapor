@@ -14,7 +14,6 @@ final class Injury: Model {
     var name: String
     var player_id: Node?
     var situation: String
-    var date_of_injury: String
     var time_of_injury: String
     var injured_body_part: String?
     var is_contact_injury : String?
@@ -27,7 +26,7 @@ final class Injury: Model {
 
     var exists: Bool = false
     
-    init(name: String, player_id: Node? = nil, situation: String, dateOfInjury: String, timeOfInjury: String,
+    init(name: String, player_id: Node? = nil, situation: String, timeOfInjury: String,
         injuredBodyPart: String, isContactInjury: String,
         playingSurface: String, weatherConditions: String, estimatedAbsencePeriod: String, recovery_date: String, club_id: Node? = nil, specialist_id: Node? = nil
         )
@@ -35,7 +34,6 @@ final class Injury: Model {
         self.name = name
         self.player_id = player_id
         self.situation = situation
-        self.date_of_injury = dateOfInjury
         self.time_of_injury = timeOfInjury
         self.injured_body_part = injuredBodyPart
         self.is_contact_injury = isContactInjury
@@ -52,7 +50,6 @@ final class Injury: Model {
         name = try node.extract("name")
         player_id = try node.extract("player_id")
         situation = try node.extract("situation")
-        date_of_injury = try node.extract("date_of_injury")
         time_of_injury = try node.extract("time_of_injury")
         injured_body_part = try node.extract("injured_body_part")
         is_contact_injury = try node.extract("is_contact_injury")
@@ -70,7 +67,6 @@ final class Injury: Model {
             "name": name,
             "player_id": player_id,
             "situation": situation,
-            "date_of_injury": date_of_injury,
             "time_of_injury": time_of_injury,
             "injured_body_part": injured_body_part,
             "is_contact_injury": is_contact_injury,
@@ -90,7 +86,6 @@ final class Injury: Model {
             injuries.string("name")
             injuries.parent(Player.self, optional: false)
             injuries.string("situation")
-            injuries.string("date_of_injury")
             injuries.string("time_of_injury")
             injuries.string("injured_body_part")
             injuries.string("is_contact_injury")
