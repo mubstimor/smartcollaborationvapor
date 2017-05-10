@@ -61,34 +61,12 @@ final class SmartController{
         let specialist_club = club?.name
         let subscription = try Subscription.query().filter("club_id", (specialist?.club_id)!).first()
         let club_package = subscription?.package
-        
-        let specialist_name = (specialist?.name)!
-        let spec_email = "\(specialist?.email)"
-
-//        let object = try Node(node: [
-//            "player": (specialist?.name)!,
-//            "specialist": (specialist?.email)!,
-//            "injury": specialist_club!,
-//            "appointment_time": club_package!
-//            ])
-//        
+      
         let response = try Node(node: [
-            "name": specialist_name,
-            "email": spec_email,
             "club": specialist_club,
-            "package": club_package
+            "package": club_package,
+            "specialist": specialist
             ])
-        
-//        return try JSON(node: [
-//            "name": specialist?.name,
-//            "email": specialist?.email,
-//            "club": specialist_club,
-//            "package": club_package
-//            ])
-        
-//        return try JSON(node: [
-//            "message": "Hello, welcome!"
-//            ])
         
             return try JSON(response.makeNode())
     }
