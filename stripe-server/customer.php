@@ -82,7 +82,11 @@ echo json_encode($response);
 function postToDataServer($package, $date_paid, $next_payment, $stripe_customer_id, $status, $club_id ){
 // Your ID and token
 // $blogID = '8070105920543249955';
-$auth_key = getenv('SV_KEY');
+$api_key_id = getenv('API_KEY_ID');
+$api_key_secret = getenv('API_KEY_SECRET');
+$api_string = $api_key_id.':'.$api_key_secret;
+// $auth_key = getenv('SV_KEY');
+$auth_key = base64_encode($api_string);
 $authToken = 'Basic '.$auth_key;
 
 // The data to send to the API

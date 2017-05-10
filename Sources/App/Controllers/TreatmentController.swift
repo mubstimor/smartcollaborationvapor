@@ -42,14 +42,15 @@ final class TreatmentController{
              * Date comparison based on http://stackoverflow.com/questions/24723431/swift-days-between-two-nsdates
              */
             // update recovery tracker too
-            let calendar = NSCalendar.current
+//            let calendar = NSCalendar.current
             
             // Replace the hour (time) of both dates with 00:00
-            let date1 = calendar.startOfDay(for: Date().convertFullStringToDate(dateString: treatment.date_of_treatment))
-            let date2 = calendar.startOfDay(for: Date().convertFullStringToDate(dateString: (injury?.time_of_injury)!))
+            let date1 = Date().convertFullStringToDate(dateString: treatment.date_of_treatment)
+            let date2 = Date().convertFullStringToDate(dateString: (injury?.time_of_injury)!)
             
-            let components = calendar.dateComponents([.day], from: date1, to: date2)
-            let numberOfDays = components.day
+//            let components = calendar.dateComponents([.day], from: date1, to: date2)
+//            let numberOfDays = components.day
+            let numberOfDays = daysBetween(start: date1, end: date2)
             
             var recovery = RecoveryTracker(injury_id: treatment.injury_id, rehab_time: "\(numberOfDays)", date_recorded: Date().getCurrentDate(), specialist_id: treatment.specialist_id)
             try recovery.save()
@@ -125,6 +126,10 @@ final class TreatmentController{
 
         
         return try JSON(node: response.makeNode())
+    }
+    
+    func daysBetween(start: Date, end: Date) -> Int {
+        return Calendar.current.dateComponents([.day], from: start, to: end).day!
     }
     
 }
