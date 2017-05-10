@@ -43,7 +43,7 @@ final class RecoveryTracker: Model {
     }
     
     static func prepare(_ database: Database) throws {
-        try database.create("recoverytracker") { recovery in
+        try database.create("recoverytrackers") { recovery in
             recovery.id()
             recovery.parent(Injury.self, optional: false)
             recovery.string("rehab_time")
@@ -53,7 +53,7 @@ final class RecoveryTracker: Model {
     }
     
     static func revert(_ database: Database) throws {
-        try database.delete("recoverytracker")
+        try database.delete("recoverytrackers")
     }
 }
 

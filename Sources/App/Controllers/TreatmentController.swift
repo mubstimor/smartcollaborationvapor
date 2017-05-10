@@ -38,6 +38,9 @@ final class TreatmentController{
             injury?.recovery_date = treatment.date_of_treatment
             try injury?.save()
             
+            /*
+             * Date comparison based on http://stackoverflow.com/questions/24723431/swift-days-between-two-nsdates
+             */
             // update recovery tracker too
             let calendar = NSCalendar.current
             
