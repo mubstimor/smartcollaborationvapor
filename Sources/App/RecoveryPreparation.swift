@@ -13,11 +13,11 @@ struct RecoveryPreparation: Preparation {
     
     static func prepare(_ database: Database) throws {
         try database.modify("recoverytrackers", closure: { name in
-            name.string("injury_name", length: 150, optional: false, unique: false, default: nil)
+            name.string("injury_name", length: 150, optional: false, unique: false, default: "Hamstring")
         })
     }
     
     static func revert(_ database: Database) throws {
-        
+        try database.delete("recoverytrackers")
     }
 }
