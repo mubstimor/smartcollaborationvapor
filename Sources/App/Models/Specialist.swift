@@ -134,12 +134,12 @@ extension Specialist: Authenticator {
              * taken from https://github.com/stormpath/Turnstile-Vapor-Example
              */
         case let credentials as APIKey:
-            print("auth with api keys")
+//            print("auth with api keys")
             user = try Specialist.query()
                 .filter("api_key_id", credentials.id)
                 .filter("api_key_secret", credentials.secret)
                 .first()
-            print("id was \(credentials.id) and secret \(credentials.secret)")
+//            print("id was \(credentials.id) and secret \(credentials.secret)")
 //            print("found \(user?.email)")
             
             
