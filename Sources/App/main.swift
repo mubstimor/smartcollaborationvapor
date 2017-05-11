@@ -30,6 +30,7 @@ drop.preparations.append(Fixture.self)
 drop.preparations.append(Transfer.self)
 drop.preparations.append(KeyConcern.self)
 drop.preparations.append(RecoveryTracker.self)
+drop.preparations.append(RecoveryPreparation.self)
 
 let auth = AuthMiddleware(user: Specialist.self) { value in
     return Cookie(
