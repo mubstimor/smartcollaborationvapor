@@ -15,13 +15,15 @@ final class RecoveryTracker: Model {
     var rehab_time: String
     var date_recorded: String
     var specialist_id: Node?
+    var injury_name: String
     var exists: Bool = false
     
-    init(injury_id: Node? = nil, rehab_time: String, date_recorded: String, specialist_id: Node? = nil) {
+    init(injury_id: Node? = nil, rehab_time: String, date_recorded: String, specialist_id: Node? = nil,   injury_name: String) {
         self.injury_id = injury_id
         self.rehab_time = rehab_time
         self.date_recorded = date_recorded
         self.specialist_id = specialist_id
+        self.injury_name = injury_name
     }
     
     init(node: Node, in context: Context) throws {
@@ -30,6 +32,7 @@ final class RecoveryTracker: Model {
         rehab_time = try node.extract("rehab_time")
         date_recorded = try node.extract("date_recorded")
         specialist_id = try node.extract("specialist_id")
+        injury_name = try node.extract("injury_name")
     }
     
     func makeNode(context: Context) throws -> Node {
@@ -38,7 +41,8 @@ final class RecoveryTracker: Model {
             "injury_id": injury_id,
             "rehab_time": rehab_time,
             "date_recorded": date_recorded,
-            "specialist_id": specialist_id
+            "specialist_id": specialist_id,
+            "injury_name" : injury_name
             ])
     }
     

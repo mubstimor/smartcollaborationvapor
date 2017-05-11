@@ -52,6 +52,7 @@ final class RecoveryTrackerController {
         recovery.rehab_time = new.rehab_time
         recovery.date_recorded = new.date_recorded
         recovery.specialist_id = new.specialist_id
+        recovery.injury_name = new.injury_name
         try recovery.save()
         return recovery
     }

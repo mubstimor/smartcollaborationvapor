@@ -52,7 +52,7 @@ final class TreatmentController{
 //            let numberOfDays = components.day
             let numberOfDays = daysBetween(start: date1, end: date2)
             
-            var recovery = RecoveryTracker(injury_id: treatment.injury_id, rehab_time: "\(numberOfDays)", date_recorded: Date().getCurrentDate(), specialist_id: treatment.specialist_id)
+            var recovery = RecoveryTracker(injury_id: treatment.injury_id, rehab_time: "\(numberOfDays)", date_recorded: Date().getCurrentDate(), specialist_id: treatment.specialist_id, injury_name: (injury?.name)!)
             try recovery.save()
             
         }
